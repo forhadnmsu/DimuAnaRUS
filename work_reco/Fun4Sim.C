@@ -1,5 +1,4 @@
 R__LOAD_LIBRARY(libdimu_ana_rus)
-R__LOAD_LIBRARY(libfun4all_rus_file_manager)
 R__LOAD_LIBRARY(libfun4all)
 R__LOAD_LIBRARY(libPHPythia8)
 R__LOAD_LIBRARY(libg4detectors)
@@ -13,8 +12,6 @@ R__LOAD_LIBRARY(libktracker)
 R__LOAD_LIBRARY(libSQPrimaryGen)
 R__LOAD_LIBRARY(libcalibrator)
 
-
-//int Fun4Sim(const int n_evt = 200){
 int Fun4Sim(const string Vect_in, const string DST_out, const int n_evt=20){
 	const double FMAGSTR = -1.044;
 	const double KMAGSTR = -1.025;
@@ -30,17 +27,15 @@ int Fun4Sim(const string Vect_in, const string DST_out, const int n_evt=20){
 	Fun4AllServer* se = Fun4AllServer::instance();
 	se->Verbosity(100);
 
-
 	CalibHitElementPos* cal_ele_pos = new CalibHitElementPos();
 	cal_ele_pos->CalibTriggerHit(false);
 	se->registerSubsystem(cal_ele_pos);
 
-   /// Save only events that are in the geometric acceptance.
-	      SQGeomAcc* geom_acc = new SQGeomAcc();
-	      geom_acc->SetMuonMode(SQGeomAcc::PAIR_TBBT); // PAIR, PAIR_TBBT, SINGLE, SINGLE_T, etc.
-	      geom_acc->SetPlaneMode(SQGeomAcc::HODO_CHAM); // HODO, CHAM or HODO_CHAM
-	      geom_acc->SetNumOfH1EdgeElementsExcluded(4); // Exclude 4 elements at H1 edges
-	      se->registerSubsystem(geom_acc);
+	SQGeomAcc* geom_acc = new SQGeomAcc();
+	geom_acc->SetMuonMode(SQGeomAcc::PAIR_TBBT); // PAIR, PAIR_TBBT, SINGLE, SINGLE_T, etc.
+	geom_acc->SetPlaneMode(SQGeomAcc::HODO_CHAM); // HODO, CHAM or HODO_CHAM
+	geom_acc->SetNumOfH1EdgeElementsExcluded(4); // Exclude 4 elements at H1 edges
+	se->registerSubsystem(geom_acc);
 
 	SQReco* reco = new SQReco();
 	reco->Verbosity(1);
@@ -75,14 +70,14 @@ int Fun4Sim(const string Vect_in, const string DST_out, const int n_evt=20){
 	//RUS output manager
 
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
-        dimuAna->SetTreeName("tree");
-        dimuAna->SetOutputFileName(DST_out);
-        dimuAna->SetMCMode(true);
-        dimuAna->SetDataTriggerEmu(false); 
-        dimuAna->SetSaveOnlyDimuon(true);
-        dimuAna->SetRecoMode(true);
-        se->registerSubsystem(dimuAna);
-        se->registerSubsystem(new DimuAnaRUS());
+	dimuAna->SetTreeName("tree");
+	dimuAna->SetOutputFileName(DST_out);
+	dimuAna->SetMCMode(true);
+	dimuAna->SetDataTriggerEmu(false); 
+	dimuAna->SetSaveOnlyDimuon(true);
+	dimuAna->SetRecoMode(true);
+	se->registerSubsystem(dimuAna);
+	se->registerSubsystem(new DimuAnaRUS());
 
 	se->run(n_evt);
 	se->End();
