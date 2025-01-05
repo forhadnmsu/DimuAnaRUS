@@ -1,0 +1,10 @@
+*.root
+*.log
+*.tmp
+*.swp
+build/
+inst/
+work_reco/data
+work_reco/scratch
+Convert/scratch
+Convert/data
