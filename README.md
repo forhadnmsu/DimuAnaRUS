@@ -14,7 +14,7 @@ To include true track or reconstructed variables in your RUS file, follow these 
    - Set `SetRecoMode()` to `true` to add the reconstructed variables.
    - Set `SetMCMode()` to `true` to add the MC true variables.
 
-### Example Usage in the Macro `Fun4All.C` locaed in the Convert directory:
+### Example Usage in the Macro `Fun4All.C` locaed in the Convert/work_reco/mc_gen directory:
 
 ```cpp
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
@@ -50,11 +50,11 @@ To include true track or reconstructed variables in your RUS file, follow these 
 ## Trigger-Level Hit Variables
 | Variable Name              | Type                     | Description                                  |
 |----------------------------|--------------------------|----------------------------------------------|
-| `trigDetectorIDs`           | `std::vector<int>`       | Detector IDs for triggered hits              |
-| `trigElementIDs`            | `std::vector<int>`       | Element IDs for triggered hits               |
-| `trigDriftDistances`        | `std::vector<double>`    | Drift distances for triggered hits           |
-| `trigTdcTimes`              | `std::vector<double>`    | TDC timing values for triggered hits         |
-| `trigHitInTimes`            | `std::vector<bool>`      | Flags indicating if triggered hits are in    |
+| `trigDetectorIDs`          | `std::vector<int>`       | Detector IDs for triggered hits              |
+| `trigElementIDs`           | `std::vector<int>`       | Element IDs for triggered hits               |
+| `trigDriftDistances`       | `std::vector<double>`    | Drift distances for triggered hits           |
+| `trigTdcTimes`             | `std::vector<double>`    | TDC timing values for triggered hits         |
+| `trigHitInTimes`           | `std::vector<bool>`      | Flags indicating if triggered hits are in    |
 |			     |				|   time					       |		
 
 ## Track-Level Variables

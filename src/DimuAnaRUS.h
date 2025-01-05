@@ -16,7 +16,6 @@ class DimuAnaRUS: public SubsysReco {
 	SQEvent* m_evt;
 	SQSpillMap* m_sp_map;
 	SQHitVector* m_hit_vec;
-	SQHitVector* m_trig_hit_vec;
 	SQTrackVector * m_vec_trk;
 	SQTrackVector*  m_sq_trk_vec;
 	SQDimuonVector* m_sq_dim_vec;
@@ -26,27 +25,30 @@ class DimuAnaRUS: public SubsysReco {
 	std::string m_tree_name;
 	TFile*      m_file;
 	TTree*      m_tree;
+	public:
 
 	UtilTrigger::TrigRoadset m_rs;
-	bool mc_mode;
-	bool reco_mode;
-	bool data_trig_mode;
-	bool mc_trig_mode;
-	bool saveDimuonOnly;
+        bool mc_mode;
+        bool reco_mode;
+        bool data_trig_mode;
+        bool mc_trig_mode;
+        bool saveDimuonOnly;
 
-	void SetMCMode(bool enable) { mc_mode = enable; }
-	void SetRecoMode(bool enable) { reco_mode = enable; }
-	void SetDataTriggerEmu(bool enable) { 
-		data_trig_mode = enable; 
-		mc_trig_mode = !enable; // Automatically disable mc_trig_mode when data_trig_mode is enabled
-	}
+        void SetMCMode(bool enable) { mc_mode = enable; }
+        void SetRecoMode(bool enable) { reco_mode = enable; }
+        void SetDataTriggerEmu(bool enable) { 
+                data_trig_mode = enable; 
+                mc_trig_mode = !enable; // Automatically disable mc_trig_mode when data_trig_mode is enabled
+        }   
 
-	void SetMCTriggerEmu(bool enable) { 
-		mc_trig_mode = enable; 
-		data_trig_mode = !enable; // Automatically disable data_trig_mode when mc_trig_mode is enabled
-	}	
+        void SetMCTriggerEmu(bool enable) { 
+                mc_trig_mode = enable; 
+                data_trig_mode = !enable; // Automatically disable data_trig_mode when mc_trig_mode is enabled
+        }   
 
-	public:
+        void SetSaveOnlyDimuon(bool enable) { saveDimuonOnly = enable; }
+
+
 	DimuAnaRUS(const std::string& name="DimuAnaRUS");
 	virtual ~DimuAnaRUS();
 	int Init(PHCompositeNode *startNode);
@@ -57,7 +59,6 @@ class DimuAnaRUS: public SubsysReco {
 
 	void SetTreeName(const std::string& name) { m_tree_name = name; }
 	void SetFileName(const std::string& name) { m_file_name = name; }
-	void SetSaveOnlyDimuon(bool enable) { saveDimuonOnly = enable; }
 	void ResetBranches();
 
 	private:
@@ -77,13 +78,6 @@ class DimuAnaRUS: public SubsysReco {
 	std::vector<double> tdcTimes;
 	std::vector<double> driftDistances;
 	std::vector<bool> hitsInTime;
-
-	std::vector<int> triggerDetectorIDs;
-	std::vector<int> triggerElementIDs;
-	std::vector<double> triggerTdcTimes;
-	std::vector<double> triggerDriftDistances;
-	std::vector<bool> triggerHitsInTime;
-
 	// MC track data
 	std::vector<int> mc_track_charges;
 	std::vector<int> mc_track_id;

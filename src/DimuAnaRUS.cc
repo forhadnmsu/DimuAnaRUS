@@ -18,7 +18,6 @@
 #include <phool/PHIODataNode.h>
 #include <phool/getClass.h>
 #include <geom_svc/GeomSvc.h>
-//#include <UtilAna/UtilHist.h>
 #include "DimuAnaRUS.h"
 using namespace std;
 
@@ -33,7 +32,7 @@ DimuAnaRUS::DimuAnaRUS(const std::string& name)
     m_hit_vec(0),
     m_sq_trk_vec(0),
     m_sq_dim_vec(0),
-    saveDimuonOnly(true),
+    saveDimuonOnly(false),
     mc_mode(false),
     reco_mode(true),
     data_trig_mode(true),
@@ -85,12 +84,6 @@ int DimuAnaRUS::InitRun(PHCompositeNode* startNode)
 	m_tree->Branch("tdcTimes", &tdcTimes);
 	m_tree->Branch("driftDistances", &driftDistances);
 	m_tree->Branch("hitsInTime", &hitsInTime);
-
-	m_tree->Branch("triggerDetectorIDs", &triggerDetectorIDs);
-	m_tree->Branch("triggerElementIDs", &triggerElementIDs);
-	m_tree->Branch("triggerTdcTimes", &triggerTdcTimes);
-	m_tree->Branch("triggerDriftDistances", &triggerDriftDistances);
-	m_tree->Branch("triggerHitsInTime", &triggerHitsInTime);
 
 	if (mc_mode==true){
 		m_tree->Branch("mc_track_charges", &mc_track_charges);
@@ -155,6 +148,7 @@ int DimuAnaRUS::InitRun(PHCompositeNode* startNode)
 	cout << "end of the mc mode "<< endl;
 	cout << "beginning of the reco mode: "<< reco_mode << endl;
 	cout << "end of the reco mode "<< endl;
+	cout <<"reco mode status: " << reco_mode << endl;
 
 	if (reco_mode) {
 		m_sq_trk_vec = findNode::getClass<SQTrackVector>(startNode, "SQRecTrackVector");
@@ -171,11 +165,12 @@ int DimuAnaRUS::InitRun(PHCompositeNode* startNode)
 		}
 	}
 
+	cout <<"reco mode status 2: " << reco_mode << endl;
 	m_evt = findNode::getClass<SQEvent>(startNode, "SQEvent");
 	m_hit_vec = findNode::getClass<SQHitVector>(startNode, "SQHitVector");
-	m_trig_hit_vec = findNode::getClass<SQHitVector>(startNode, "SQTriggerHitVector");
+	cout <<"reco mode status 3: " << reco_mode << endl;
 
-	if (!m_evt || !m_hit_vec || !m_trig_hit_vec) {
+	if (!m_evt || !m_hit_vec) {
 		return Fun4AllReturnCodes::ABORTEVENT;
 	}
 
@@ -252,17 +247,6 @@ if (m_hit_vec) {
     }
 }
 
-if (m_trig_hit_vec) {
-    for (int ihit = 0; ihit < m_trig_hit_vec->size(); ++ihit) {
-        SQHit* hit = m_trig_hit_vec->at(ihit);
-        triggerDetectorIDs.push_back(hit->get_detector_id());
-        triggerElementIDs.push_back(hit->get_element_id());
-        triggerTdcTimes.push_back(hit->get_tdc_time());
-        triggerDriftDistances.push_back(hit->get_drift_distance());
-        triggerHitsInTime.push_back(hit->is_in_time());
-    }
-}
-
 if(mc_mode==true){
 	for (unsigned int ii = 0; ii < m_vec_trk->size(); ii++) {
 		SQTrack* trk = m_vec_trk->at(ii);
@@ -299,7 +283,6 @@ if(reco_mode==true){
 		cout << "----------------------------------"<< endl;
 
 		cout << "dim mass "<< sdim.get_mom().M() <<endl;
-		cout << "dim mass 2 "<<sdim.mass <<endl;
 		cout << "dim x1 "<<sdim.x1 <<endl;
 		cout << "dim x2 "<< sdim.x2<<endl;
 		cout << "dim Pz "<< sdim.get_mom().Pz()<<endl;
@@ -356,12 +339,6 @@ void DimuAnaRUS::ResetBranches() {
 	tdcTimes.clear();
 	driftDistances.clear();
 	hitsInTime.clear();
-
-	triggerDetectorIDs.clear();
-	triggerElementIDs.clear();
-	triggerTdcTimes.clear();
-	triggerDriftDistances.clear();
-	triggerHitsInTime.clear();
 
 	//mc events
 	mc_track_charges.clear();
