@@ -14,6 +14,18 @@ To include true track or reconstructed variables in your RUS file, follow these 
    - Set `SetRecoMode()` to `true` to add the reconstructed variables.
    - Set `SetMCMode()` to `true` to add the MC true variables.
 
+### Example Usage in the Macro `Fun4All.C` locaed in the Convert directory:
+
+```cpp
+	DimuAnaRUS* dimuAna = new DimuAnaRUS();
+	dimuAna->SetTreeName("tree");
+	dimuAna->SetMCMode(false);
+	dimuAna->SetDataTriggerEmu(true);
+	tree->SetSaveOnlyDimuon(true);
+	tree->SetRecoMode(true);
+	se->registerSubsystem(dimuAna);
+	se->registerSubsystem(new DimuAnaRUS());
+
 # Updated Variable Names and Types
 
 ## Event-Level Variables
