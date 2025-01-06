@@ -12,19 +12,19 @@ R__LOAD_LIBRARY(libktracker)
 R__LOAD_LIBRARY(libSQPrimaryGen)
 R__LOAD_LIBRARY(libcalibrator)
 
-int Fun4All(const string Vect_in, const string DST_out, const int n_evt=0){
+int Fun4All(const string DST_in, const string DST_out, const int n_evt=0){
 	Fun4AllServer* se = Fun4AllServer::instance();
 	Fun4AllInputManager *in = new Fun4AllDstInputManager("DUMMY");
 	se->registerInputManager(in);
-	in->fileopen(Vect_in);
+	in->fileopen(DST_in);
 	
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
 	dimuAna->SetTreeName("tree");
 	dimuAna->SetOutputFileName(DST_out);
 	dimuAna->SetMCMode(false);
 	dimuAna->SetDataTriggerEmu(true); 
-	tree->SetSaveOnlyDimuon(true);
-	tree->SetRecoMode(true);
+	dimuAna->SetSaveOnlyDimuon(true);
+	dimuAna->SetRecoMode(true);
 	se->registerSubsystem(dimuAna);
 	se->registerSubsystem(new DimuAnaRUS());
 

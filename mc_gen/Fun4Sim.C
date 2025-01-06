@@ -128,9 +128,9 @@ int Fun4Sim(const int nevent = 10)
 		genp->add_particles("mu+", nmu);  // mu+,e+,proton,pi+,Upsilon
 		if (SQ_vtx_gen) genp->enableLegacyVtxGen();
 		else{
-			genp->set_vertex_distribution_function(PHG4SimpleEventGenerator::Gaus,
-					PHG4SimpleEventGenerator::Gaus,
-					PHG4SimpleEventGenerator::Gaus);
+			genp->set_vertex_distribution_function(PHG4SimpleEventGenerator::Uniform,
+					PHG4SimpleEventGenerator::Uniform,
+					PHG4SimpleEventGenerator::Uniform);
 			genp->set_vertex_distribution_mean(0.0, 0.0, target_coil_pos_z);
 			genp->set_vertex_distribution_width(0.0, 0.0, 0.0);
 			genp->set_vertex_size_function(PHG4SimpleEventGenerator::Uniform);
