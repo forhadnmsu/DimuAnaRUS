@@ -245,6 +245,15 @@ int Fun4Sim(const int nevent = 10)
 	digitizer->set_enable_dphodo(do_dphodo);       // in the SetupSensitiveVolumes() function call above
 	se->registerSubsystem(digitizer);
 
+	se->registerSubsystem(new TruthNodeMaker());
+
+	  //Apply additonal cut after event generation
+        MuonTrackFilter* muon_filter = new MuonTrackFilter();
+        muon_filter->SetAngleThreshold(0.0, 5.0); //in degree
+        se->registerSubsystem(muon_filter);
+
+	
+
 
 	/// Save only events that are in the geometric acceptance.
 	SQGeomAcc* geom_acc = new SQGeomAcc();
@@ -255,7 +264,6 @@ int Fun4Sim(const int nevent = 10)
 	se->registerSubsystem(geom_acc);
 	// Make SQ nodes for truth info
 	se->registerSubsystem(new TruthNodeMaker());
-
 
 	// embedding
 	if(embedding_opt == 1) {
@@ -338,7 +346,7 @@ int Fun4Sim(const int nevent = 10)
   
 //      se->registerSubsystem(new DimuAnaRUS());
 
-	const bool count_only_good_events = false;
+	const bool count_only_good_events = true;
 	se->run(nevent, count_only_good_events);
 
 	PHGeomUtility::ExportGeomtry(se->topNode(),"geom.root");
