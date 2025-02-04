@@ -79,6 +79,23 @@ std::vector<double>* mc_mom_vtx_px = nullptr;
 std::vector<double>* mc_mom_vtx_py = nullptr;
 std::vector<double>* mc_mom_vtx_pz = nullptr;
 
+std::vector<double>* mc_pos_st1_x = nullptr;
+std::vector<double>* mc_pos_st1_y = nullptr;
+std::vector<double>* mc_pos_st1_z = nullptr;
+std::vector<double>* mc_mom_st1_px = nullptr;
+std::vector<double>* mc_mom_st1_py = nullptr;
+std::vector<double>* mc_mom_st1_pz = nullptr;
+
+
+std::vector<double>* mc_pos_st3_x = nullptr;
+std::vector<double>* mc_pos_st3_y = nullptr;
+std::vector<double>* mc_pos_st3_z = nullptr;
+std::vector<double>* mc_mom_st3_px = nullptr;
+std::vector<double>* mc_mom_st3_py = nullptr;
+std::vector<double>* mc_mom_st3_pz = nullptr;
+
+
+
 int fpgaTriggers[5] = {0};
 int nimTriggers[5] = {0};
 int rfIntensities[33] = {0};

@@ -14,6 +14,7 @@ R__LOAD_LIBRARY(libembedding)
 R__LOAD_LIBRARY(libevt_filter)
 R__LOAD_LIBRARY(libktracker)
 R__LOAD_LIBRARY(libSQPrimaryGen)
+
 using namespace std;
 
 int Fun4Sim(const int nevent = 10)
@@ -88,8 +89,8 @@ int Fun4Sim(const int nevent = 10)
 	if(gen_pythia8) {    
 		PHPythia8 *pythia8 = new PHPythia8();
 		//pythia8->Verbosity(99);
-		//pythia8->set_config_file("phpythia8_DY.cfg");
-		pythia8->set_config_file("phpythia8_Jpsi.cfg"); // Jpsi, Jpsi_direct, psip
+		pythia8->set_config_file("phpythia8_DY.cfg");
+		//pythia8->set_config_file("phpythia8_Jpsi.cfg"); // Jpsi, Jpsi_direct, psip
 		if(SQ_vtx_gen) pythia8->enableLegacyVtxGen();
 		else{
 			pythia8->set_vertex_distribution_mean(0, 0, target_coil_pos_z, 0);
@@ -139,7 +140,7 @@ int Fun4Sim(const int nevent = 10)
 		if(FMAGSTR>0)
 			genp->set_pxpypz_range(-6,6, -3,3, 10,100);
 		else
-			genp->set_pxpypz_range(-6.0,1.0, -4,4,  10, 80);
+			genp->set_pxpypz_range(-6.0,6.0, -4,4,  10, 60);
 
 		//genp->set_pt_range(0.0,4.0, 0.6);
 		//genp->set_eta_range(2.0, 6.0); 
@@ -164,9 +165,8 @@ int Fun4Sim(const int nevent = 10)
 		if(FMAGSTR>0)
 			genm->set_pxpypz_range(-6,6, -3,3, 10,100);
 		else
-			genm->set_pxpypz_range(-1,6, -4,4, 10,80);
-		//genm->set_pt_range(0.0,4.0, 0.6);
-		//genm->set_eta_range(2.0, 6.0);
+			genm->set_pxpypz_range(-6,6, -4,4, 10,60);
+
 		genm->Verbosity(0);
 		se->registerSubsystem(genm);
 	}
@@ -284,7 +284,7 @@ int Fun4Sim(const int nevent = 10)
 	// input - we need a dummy to drive the event loop
 
 
-		SQReco* reco = new SQReco();
+	SQReco* reco = new SQReco();
 	reco->Verbosity(1);
 	reco->set_legacy_rec_container(false); 
 	reco->set_geom_file_name((string)gSystem->Getenv("E1039_RESOURCE") + "/geometry/geom_run005433.root");
@@ -326,15 +326,17 @@ int Fun4Sim(const int nevent = 10)
 	//  se->registerOutputManager(out);
 	//}
 
+
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
         dimuAna->SetTreeName("tree");
-        dimuAna->SetOutputFileName("DST.root");
-        //dimuAna->SetMCMode(true);
-        //dimuAna->SetMCTriggerEmu(true); 
-        //dimuAna->SetSaveOnlyDimuon(true);
-        dimuAna->SetRecoMode(false);
+        dimuAna->SetOutputFileName("RUS.root");
+        dimuAna->SetMCTrueMode(true);
+        dimuAna->SetSaveOnlyDimuon(true);
+	dimuAna->SetMCDimuonMode(false);
+        dimuAna->SetRecoMode(true);
         se->registerSubsystem(dimuAna);
-        se->registerSubsystem(new DimuAnaRUS());
+  
+//      se->registerSubsystem(new DimuAnaRUS());
 
 	const bool count_only_good_events = false;
 	se->run(nevent, count_only_good_events);

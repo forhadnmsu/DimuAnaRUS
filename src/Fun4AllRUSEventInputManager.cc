@@ -181,15 +181,40 @@ void Fun4AllRUSEventInputManager::VectToE1039() {
 			trk->set_track_id(mc_track_id->at(i));
 			trk->set_charge(mc_track_charges->at(i));
 			TVector3 vertex_position(mc_pos_vtx_x->at(i), mc_pos_vtx_y->at(i), mc_pos_vtx_z->at(i)); 
+			TVector3 vertex_position_st1(mc_pos_st1_x->at(i), mc_pos_st1_y->at(i), mc_pos_st1_z->at(i)); 
+			TVector3 vertex_position_st3(mc_pos_st3_x->at(i), mc_pos_st3_y->at(i), mc_pos_st3_z->at(i)); 
+
 			trk->set_pos_vtx(vertex_position);
+			trk->set_pos_vtx(vertex_position_st1);
+			trk->set_pos_vtx(vertex_position_st3);
+
 			TLorentzVector momentum_at_vertex;
+			TLorentzVector momentum_at_st1;
+			TLorentzVector momentum_at_st3;
 			momentum_at_vertex.SetXYZM(
 					mc_mom_vtx_px->at(i),
 					mc_mom_vtx_py->at(i),
 					mc_mom_vtx_pz->at(i),
 					0.105658 // Muon mass in GeV/c^2
 					);
+
+			 momentum_at_st1.SetXYZM(
+                                        mc_mom_st1_px->at(i),
+                                        mc_mom_st1_py->at(i),
+                                        mc_mom_st1_pz->at(i),
+                                        0.105658 // Muon mass in GeV/c^2
+                                        );  
+
+			 momentum_at_st3.SetXYZM(
+                                        mc_mom_st3_px->at(i),
+                                        mc_mom_st3_py->at(i),
+                                        mc_mom_st3_pz->at(i),
+                                        0.105658 // Muon mass in GeV/c^2
+                                        );  
+
 			trk->set_mom_vtx(momentum_at_vertex);
+			trk->set_mom_vtx(momentum_at_st1);
+			trk->set_mom_vtx(momentum_at_st3);
 			true_track_vec->push_back(trk);
 		}
 	}
@@ -257,6 +282,20 @@ if(mc_mode){
 	_tin->SetBranchAddress("mc_mom_vtx_px", &mc_mom_vtx_px);          
         _tin->SetBranchAddress("mc_mom_vtx_py", &mc_mom_vtx_py);      
         _tin->SetBranchAddress("mc_mom_vtx_pz", &mc_mom_vtx_pz);
+
+	_tin->SetBranchAddress("mc_pos_st1_x", &mc_pos_st1_x);    
+        _tin->SetBranchAddress("mc_pos_st1_y", &mc_pos_st1_y);    
+        _tin->SetBranchAddress("mc_pos_st1_z", &mc_pos_st1_z);
+        _tin->SetBranchAddress("mc_mom_st1_px", &mc_mom_st1_px);    
+        _tin->SetBranchAddress("mc_mom_st1_py", &mc_mom_st1_py);    
+        _tin->SetBranchAddress("mc_mom_st1_pz", &mc_mom_st1_pz);
+
+	_tin->SetBranchAddress("mc_pos_st3_x", &mc_pos_st3_x);    
+        _tin->SetBranchAddress("mc_pos_st3_y", &mc_pos_st3_y);    
+        _tin->SetBranchAddress("mc_pos_st3_z", &mc_pos_st3_z);
+        _tin->SetBranchAddress("mc_mom_st3_px", &mc_mom_st3_px);    
+        _tin->SetBranchAddress("mc_mom_st3_py", &mc_mom_st3_py);    
+        _tin->SetBranchAddress("mc_mom_st3_pz", &mc_mom_st3_pz);
 }
 
     segment = 0;

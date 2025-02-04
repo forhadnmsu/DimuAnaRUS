@@ -58,7 +58,7 @@ int Fun4Sim(const string Vect_in, const string DST_out, const int n_evt=20){
 	Fun4AllRUSEventInputManager* in = new Fun4AllRUSEventInputManager("VectIn");
 	in->Verbosity(99);
 	in->set_tree_name("tree");
-	in->SetMCMode(true);
+	in->SetMCMode(false);
 	in->fileopen(Vect_in);
 	//in->fileopen("/seaquest/users/mhossain/TrackMerging/out/combined_tracks_1.root");
 	se->registerInputManager(in);
@@ -77,7 +77,7 @@ int Fun4Sim(const string Vect_in, const string DST_out, const int n_evt=20){
 	dimuAna->SetSaveOnlyDimuon(true);
 	dimuAna->SetRecoMode(true);
 	se->registerSubsystem(dimuAna);
-	se->registerSubsystem(new DimuAnaRUS());
+	//se->registerSubsystem(new DimuAnaRUS());
 
 	se->run(n_evt);
 	se->End();

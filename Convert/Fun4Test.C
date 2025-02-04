@@ -7,9 +7,13 @@ R__LOAD_LIBRARY(libktracker)
 R__LOAD_LIBRARY(libcalibrator)
 
 int Fun4Test(){
-	const string Vect_in = "/pnfs/e1039/scratch/users/kenichi/RecoData2024/reco/run_006155/spill_001941929/out/run_006155_spill_001941929_spin_reco.root";
+	//const string Vect_in = "/pnfs/e1039/scratch/users/kenichi/RecoData2024/reco/run_006155/spill_001941929/out/run_006155_spill_001941929_spin_reco.root";
+	//const string Vect_in = "/pnfs/e1039/scratch/users/kenichi/RecoData2024/reco/run_005848/spill_001916130/out/run_005848_spill_001916130_spin_reco.root";
+
+	 //const string Vect_in = "/pnfs/e1039/scratch/users/kenichi/RecoData2024/reco/run_006045/spill_001928352/out/run_006045_spill_001928352_spin_reco.root";
+	const string Vect_in = "/pnfs/e1039/scratch/users/kenichi/RecoData2024/reco/run_006036/spill_001927096/out/run_006036_spill_001927096_spin_reco.root";
 	recoConsts* rc = recoConsts::instance();
-	rc->set_IntFlag("RUNNUMBER", 6155);
+	rc->set_IntFlag("RUNNUMBER", 6127);
 	rc->set_DoubleFlag("FMAGSTR", -1.044);
 	rc->set_DoubleFlag("KMAGSTR", -1.025);
 
@@ -26,7 +30,14 @@ int Fun4Test(){
 	   se->registerOutputManager(tree);
 	   */
 
-	se->registerSubsystem(new DimuAnaRUS());
+
+	DimuAnaRUS* dimuAna = new DimuAnaRUS();
+	dimuAna->SetTreeName("tree");
+	dimuAna->SetMCTrueMode(false);
+	dimuAna->SetRecoMode("false");
+	dimuAna->SetSaveOnlyDimuon(false);
+	dimuAna->SetOutputFileName("run_006036_spill_001927096.root");
+	se->registerSubsystem(dimuAna);
 
 	se->run(100);
 	se->End();

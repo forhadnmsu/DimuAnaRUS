@@ -19,6 +19,7 @@ class DimuAnaRUS: public SubsysReco {
 	SQTrackVector * m_vec_trk;
 	SQTrackVector*  m_sq_trk_vec;
 	SQDimuonVector* m_sq_dim_vec;
+	SQDimuonVector* m_true_vec_dim;
 	SQRun* sq_run;
 
 	std::string m_file_name;
@@ -28,25 +29,27 @@ class DimuAnaRUS: public SubsysReco {
 	public:
 
 	UtilTrigger::TrigRoadset m_rs;
-        bool mc_mode;
-        bool reco_mode;
-        bool data_trig_mode;
-        bool mc_trig_mode;
-        bool saveDimuonOnly;
+	bool true_mode;
+	bool reco_mode;
+	bool data_trig_mode;
+	bool mc_trig_mode;
+	bool saveDimuonOnly;
+	bool true_dimu_mode;
 
-        void SetMCMode(bool enable) { mc_mode = enable; }
-        void SetRecoMode(bool enable) { reco_mode = enable; }
-        void SetDataTriggerEmu(bool enable) { 
-                data_trig_mode = enable; 
-                mc_trig_mode = !enable; // Automatically disable mc_trig_mode when data_trig_mode is enabled
-        }   
+	void SetMCTrueMode(bool enable) { true_mode = enable; }
+	void SetMCDimuonMode(bool enable) { true_dimu_mode = enable; }
+	void SetRecoMode(bool enable) { reco_mode = enable; }
+	void SetDataTriggerEmu(bool enable) { 
+		data_trig_mode = enable; 
+		mc_trig_mode = !enable; // Automatically disable mc_trig_mode when data_trig_mode is enabled
+	}   
 
-        void SetMCTriggerEmu(bool enable) { 
-                mc_trig_mode = enable; 
-                data_trig_mode = !enable; // Automatically disable data_trig_mode when mc_trig_mode is enabled
-        }   
+	void SetMCTriggerEmu(bool enable) { 
+		mc_trig_mode = enable; 
+		data_trig_mode = !enable; // Automatically disable data_trig_mode when mc_trig_mode is enabled
+	}   
 
-        void SetSaveOnlyDimuon(bool enable) { saveDimuonOnly = enable; }
+	void SetSaveOnlyDimuon(bool enable) { saveDimuonOnly = enable; }
 
 
 	DimuAnaRUS(const std::string& name="DimuAnaRUS");
@@ -69,62 +72,97 @@ class DimuAnaRUS: public SubsysReco {
 	int eventID;
 	int rfID;
 	int turnID;
-	int rfIntensities[33];
-	int fpgaTriggers[5] = {0};
-	int nimTriggers[5] = {0};
+	int rfIntensity[33];
+	int fpgaTrigger[5] = {0};
+	int nimTrigger[5] = {0};
 
-	std::vector<int> detectorIDs;
-	std::vector<int> elementIDs;
-	std::vector<double> tdcTimes;
-	std::vector<double> driftDistances;
+	std::vector<int> detectorID;
+	std::vector<int> elementID;
+	std::vector<double> tdcTime;
+	std::vector<double> driftDistance;
 	std::vector<bool> hitsInTime;
 	// MC track data
-	std::vector<int> mc_track_charges;
-	std::vector<int> mc_track_id;
-	std::vector<double> mc_pos_vtx_x;
-	std::vector<double> mc_pos_vtx_y;
-	std::vector<double> mc_pos_vtx_z;
-	std::vector<double> mc_mom_vtx_px;
-	std::vector<double> mc_mom_vtx_py;
-	std::vector<double> mc_mom_vtx_pz;
+	// True track data
+	std::vector<int> trueTrackCharges;
+	std::vector<int> trueTrackID;
+	std::vector<double> trueVtxPosX;
+	std::vector<double> trueVtxPosY;
+	std::vector<double> trueVtxPosZ;
+	std::vector<double> trueVtxMomPx;
+	std::vector<double> trueVtxMomPy;
+	std::vector<double> trueVtxMomPz;
+
+	std::vector<double> trueSt1PosX;
+	std::vector<double> trueSt1PosY;
+	std::vector<double> trueSt1PosZ;
+	std::vector<double> trueSt1MomPx;
+	std::vector<double> trueSt1MomPy;
+	std::vector<double> trueSt1MomPz;
+
+	std::vector<double> trueSt3PosX;
+	std::vector<double> trueSt3PosY;
+	std::vector<double> trueSt3PosZ;
+	std::vector<double> trueSt3MomPx;
+	std::vector<double> trueSt3MomPy;
+	std::vector<double> trueSt3MomPz;
+
+	std::vector<int> trueDimuonPdgId;
+	std::vector<int> trueDimuonId;
+	std::vector<double> trueDimuonVtxX;
+	std::vector<double> trueDimuonVtxY;
+	std::vector<double> trueDimuonVtxZ;
+
+	std::vector<double> trueDimuonVtxPx;
+	std::vector<double> trueDimuonVtxPy;
+	std::vector<double> trueDimuonVtxPz;
+	std::vector<double> trueDimuonVtxM;
+
+	std::vector<double> trueDimuonPosPx;
+	std::vector<double> trueDimuonPosPy;
+	std::vector<double> trueDimuonPosPz;
+
+	std::vector<double> trueDimuonNegPx;
+	std::vector<double> trueDimuonNegPy;
+	std::vector<double> trueDimuonNegPz;
+
 
 	//Dimuon variables for MC or Data
-	std::vector<double> dimuon_vtx_x;
-	std::vector<double> dimuon_vtx_y;
-	std::vector<double> dimuon_vtx_z;
-	std::vector<double> dimuon_vtx_px;
-	std::vector<double> dimuon_vtx_py;
-	std::vector<double> dimuon_vtx_pz;
-	std::vector<double> dimuon_mass;
-	std::vector<double> dimuon_x1;
-	std::vector<double> dimuon_x2;
-	std::vector<double> dimuon_xF;
+	// Dimuon variables for MC or Data
+	std::vector<double> dimuonVtxX;
+	std::vector<double> dimuonVtxY;
+	std::vector<double> dimuonVtxZ;
+	std::vector<double> dimuonVtxPx;
+	std::vector<double> dimuonVtxPy;
+	std::vector<double> dimuonVtxPz;
+	std::vector<double> dimuonMass;
+	std::vector<double> dimuonX1;
+	std::vector<double> dimuonX2;
+	std::vector<double> dimuonXf;
 
-	std::vector<double> mu_plus_vtx_x;
-	std::vector<double> mu_plus_vtx_y;
-	std::vector<double> mu_plus_vtx_z;
-	std::vector<double> mu_minus_vtx_x;
-	std::vector<double> mu_minus_vtx_y;
-	std::vector<double> mu_minus_vtx_z;
+	std::vector<double> muPlusVtxX;
+	std::vector<double> muPlusVtxY;
+	std::vector<double> muPlusVtxZ;
+	std::vector<double> muMinusVtxX;
+	std::vector<double> muMinusVtxY;
+	std::vector<double> muMinusVtxZ;
 
-	std::vector<double> mu_plus_vtx_px;
-	std::vector<double> mu_plus_vtx_py;
-	std::vector<double> mu_plus_vtx_pz;
-	std::vector<double> mu_minus_vtx_px;
-	std::vector<double> mu_minus_vtx_py;
-	std::vector<double> mu_minus_vtx_pz;
+	std::vector<double> muPlusVtxPx;
+	std::vector<double> muPlusVtxPy;
+	std::vector<double> muPlusVtxPz;
+	std::vector<double> muMinusVtxPx;
+	std::vector<double> muMinusVtxPy;
+	std::vector<double> muMinusVtxPz;
 
-	std::vector<double> mu_plus_chi2_target;
-	std::vector<double> mu_plus_chi2_dump;
-	std::vector<double> mu_plus_chi2_upstream;
+	std::vector<double> muPlusChi2Target;
+	std::vector<double> muPlusChi2Dump;
+	std::vector<double> muPlusChi2Upstream;
 
-	std::vector<double> mu_minus_chi2_target;
-	std::vector<double> mu_minus_chi2_dump;
-	std::vector<double> mu_minus_chi2_upstream;
+	std::vector<double> muMinusChi2Target;
+	std::vector<double> muMinusChi2Dump;
+	std::vector<double> muMinusChi2Upstream;
 
 	std::vector<bool> top_bot;
 	std::vector<bool> bot_top;
-
 };
 
 #endif // _DimuAnaRUS.h_
