@@ -13,18 +13,6 @@ To include true track or reconstructed variables in your RUS file, follow these 
    - Set `SetRecoMode()` to `true` to add the reconstructed variables.
    - Set `SetMCMode()` to `true` to add the MC true variables.
 
-### Example Usage in the Macro `Fun4All.C` locaed in the Convert/work_reco/mc_gen directory:
-
-```cpp
-	DimuAnaRUS* dimuAna = new DimuAnaRUS();
-	dimuAna->SetTreeName("tree");
-	dimuAna->SetMCMode(false);
-	dimuAna->SetDataTriggerEmu(true);
-	tree->SetSaveOnlyDimuon(true);
-	tree->SetRecoMode(true);
-	se->registerSubsystem(dimuAna);
-	se->registerSubsystem(new DimuAnaRUS());
-
 # Updated Variable Names and Types
 ## Event-Level Variables
 | Variable Name      | Type               | Description                          |   
@@ -46,82 +34,47 @@ To include true track or reconstructed variables in your RUS file, follow these 
 | `elementID`            | `std::vector<int>`       | Element IDs associated with each hit         |   
 | `driftDistance`        | `std::vector<double>`    | Drift distances for each hit                 |   
 | `tdcTime`              | `std::vector<double>`    | TDC timing values for each hit               |   
-| `hitInTime`            | `std::vector<bool>`      | Flags indicating if hits are within time     |   
 
-## Monte Carlo Track Variables
+## Monte Carlo Truth-Level Variables
+| Variable Name  | Type                  | Description                                |
+|---------------|----------------------|----------------------------------------------|
+| `gCharge`    | `std::vector<int>`    | Charges of the Monte Carlo tracks            |
+| `gvx`        | `std::vector<double>` | X-coordinate of the generated track vertex   |
+| `gvy`        | `std::vector<double>` | Y-coordinate of the generated track vertex   |
+| `gvz`        | `std::vector<double>` | Z-coordinate of the generated track vertex   |
+| `gpx`        | `std::vector<double>` | X-component of the momentum at the vertex    |
+| `gpy`        | `std::vector<double>` | Y-component of the momentum at the vertex    |
+| `gpz`        | `std::vector<double>` | Z-component of the momentum at the vertex    |
 
-| Variable Name            | Type                | Description                                     |
-|--------------------------|---------------------|-------------------------------------------------|
-| `trueTrackID`           | `std::vector<int>`  | Track IDs for Monte Carlo tracks               |
-| `trueTrackCharges`      | `std::vector<int>`  | Charges of the Monte Carlo tracks              |
-| `trueVtxPosX`          | `std::vector<double>` | X-coordinate of the production vertex         |
-| `trueVtxPosY`          | `std::vector<double>` | Y-coordinate of the production vertex         |
-| `trueVtxPosZ`          | `std::vector<double>` | Z-coordinate of the production vertex         |
-| `trueVtxMomPx`         | `std::vector<double>` | X-component of the momentum at the vertex     |
-| `trueVtxMomPy`         | `std::vector<double>` | Y-component of the momentum at the vertex     |
-| `trueVtxMomPz`         | `std::vector<double>` | Z-component of the momentum at the vertex     |
-| `trueSt1PosX`          | `std::vector<double>` | X-coordinate at station 1                     |
-| `trueSt1PosY`          | `std::vector<double>` | Y-coordinate at station 1                     |
-| `trueSt1PosZ`          | `std::vector<double>` | Z-coordinate at station 1                     |
-| `trueSt1MomPx`         | `std::vector<double>` | X-component of the momentum at station 1      |
-| `trueSt1MomPy`         | `std::vector<double>` | Y-component of the momentum at station 1      |
-| `trueSt1MomPz`         | `std::vector<double>` | Z-component of the momentum at station 1      |
-| `trueSt3PosX`          | `std::vector<double>` | X-coordinate at station 3                     |
-| `trueSt3PosY`          | `std::vector<double>` | Y-coordinate at station 3                     |
-| `trueSt3PosZ`          | `std::vector<double>` | Z-coordinate at station 3                     |
-| `trueSt3MomPx`         | `std::vector<double>` | X-component of the momentum at station 3      |
-| `trueSt3MomPy`         | `std::vector<double>` | Y-component of the momentum at station 3      |
-| `trueSt3MomPz`         | `std::vector<double>` | Z-component of the momentum at station 3      |
 
-## Dimuon-Level Variables
+##Reco-Level Variables
+| Variable Name        | Type                  | Description                                       |
+|----------------------|-----------------------|-------------------------------------------------- |
+| `rec_vx_mup`        | `std::vector<double>`  | X-coordinate of the reconstructed mu+ vertex      |
+| `rec_vy_mup`        | `std::vector<double>`  | Y-coordinate of the reconstructed mu+ vertex      |
+| `rec_vz_mup`        | `std::vector<double>`  | Z-coordinate of the reconstructed mu+ vertex      |
+| `rec_px_mup`        | `std::vector<double>`  | X-component of the reconstructed mu+ momentum     |
+| `rec_py_mup`        | `std::vector<double>`  | Y-component of the reconstructed mu+ momentum     |
+| `rec_pz_mup`        | `std::vector<double>`  | Z-component of the reconstructed mu+ momentum     |
+| `rec_vx_mum`        | `std::vector<double>`  | X-coordinate of the reconstructed mu- vertex      |
+| `rec_vy_mum`        | `std::vector<double>`  | Y-coordinate of the reconstructed mu- vertex      |
+| `rec_vz_mum`        | `std::vector<double>`  | Z-coordinate of the reconstructed mu- vertex      |
+| `rec_px_mum`        | `std::vector<double>`  | X-component of the reconstructed mu- momentum     |
+| `rec_py_mum`        | `std::vector<double>`  | Y-component of the reconstructed mu- momentum     |
+| `rec_pz_mum`        | `std::vector<double>`  | Z-component of the reconstructed mu- momentum     |
+| `rec_dimu_vx`       | `std::vector<double>`  | X-coordinate of the reconstructed dimuon vertex   |
+| `rec_dimu_vy`       | `std::vector<double>`  | Y-coordinate of the reconstructed dimuon vertex   |
+| `rec_dimu_vz`       | `std::vector<double>`  | Z-coordinate of the reconstructed dimuon vertex   |
+| `rec_dimu_px`       | `std::vector<double>`  | X-component of the reconstructed dimuon momentum  |
+| `rec_dimu_py`       | `std::vector<double>`  | Y-component of the reconstructed dimuon momentum  |
+| `rec_dimu_pz`       | `std::vector<double>`  | Z-component of the reconstructed dimuon momentum  |
+| `rec_dimu_mass`     | `std::vector<double>`  | Mass of the reconstructed dimuon system           |
+| `rec_dimu_xf`       | `std::vector<double>`  | Xf kinematic variable for the reconstructed dimuon|
+| `rec_dimu_x1`       | `std::vector<double>`  | X1 kinematic variable for the reconstructed dimuon|
+| `rec_dimu_x2`       | `std::vector<double>`  | X2 kinematic variable for the reconstructed dimuon|
+| `top_bot`           | `std::vector<bool>`    | Flag indicating top-to-bottom relation            |
+| `bot_top`           | `std::vector<bool>`    | Flag indicating bottom-to-top relation            |
 
-| Variable Name            | Type                | Description                                     |
-|--------------------------|---------------------|-------------------------------------------------|
-| `trueDimuonPdgId`       | `std::vector<int>`  | PDG ID of the dimuon                           |
-| `trueDimuonId`          | `std::vector<int>`  | Dimuon ID                                      |
-| `trueDimuonVtxX`        | `std::vector<double>` | X-coordinate of the dimuon vertex            |
-| `trueDimuonVtxY`        | `std::vector<double>` | Y-coordinate of the dimuon vertex            |
-| `trueDimuonVtxZ`        | `std::vector<double>` | Z-coordinate of the dimuon vertex            |
-| `trueDimuonVtxPx`       | `std::vector<double>` | X-component of the dimuon momentum at vertex |
-| `trueDimuonVtxPy`       | `std::vector<double>` | Y-component of the dimuon momentum at vertex |
-| `trueDimuonVtxPz`       | `std::vector<double>` | Z-component of the dimuon momentum at vertex |
-| `trueDimuonVtxM`        | `std::vector<double>` | Mass of the dimuon                            |
-| `trueDimuonPosPx`       | `std::vector<double>` | X-momentum of the positive dimuon track      |
-| `trueDimuonPosPy`       | `std::vector<double>` | Y-momentum of the positive dimuon track      |
-| `trueDimuonPosPz`       | `std::vector<double>` | Z-momentum of the positive dimuon track      |
-| `trueDimuonNegPx`       | `std::vector<double>` | X-momentum of the negative dimuon track      |
-| `trueDimuonNegPy`       | `std::vector<double>` | Y-momentum of the negative dimuon track      |
-| `trueDimuonNegPz`       | `std::vector<double>` | Z-momentum of the negative dimuon track      |
-
-  ## Dimuon-Reco-Level Variables
-  | Variable Name            | Type                | Description                                     |
-  |--------------------------|---------------------|--------------------------------------------------|
-|`dimuonVtxX`          | `std::vector<double>` | X-coordinate of the dimuon vertex                 |
-|`dimuonVtxY`          | `std::vector<double>` | Y-coordinate of the dimuon vertex                 |
-|`dimuonVtxZ`          | `std::vector<double>` | Z-coordinate of the dimuon vertex                 |
-|`dimuonVtxPx`         | `std::vector<double>` | X-component of the dimuon vertex momentum         |
-|`dimuonVtxPy`         | `std::vector<double>` | Y-component of the dimuon vertex momentum         |
-|`dimuonVtxPz`         | `std::vector<double>` | Z-component of the dimuon vertex momentum         |
-|`dimuonMass`          | `std::vector<double>` | Mass of the dimuon system                         |
-|`dimuonX1`            | `std::vector<double>` | X1 kinematic variable for the dimuon              |
-|`dimuonX2`            | `std::vector<double>` | X2 kinematic variable for the dimuon              |
-|`dimuonXf`            | `std::vector<double>` | Xf kinematic variable for the dimuon              |
-|`muPlusVtxX`          | `std::vector<double>` | X-coordinate of the positive muon vertex          |
-|`muPlusVtxY`          | `std::vector<double>` | Y-coordinate of the positive muon vertex          |
-|`muPlusVtxZ`          | `std::vector<double>` | Z-coordinate of the positive muon vertex          |
-|`muMinusVtxX`         | `std::vector<double>` | X-coordinate of the negative muon vertex          |
-|`muMinusVtxY`         | `std::vector<double>` | Y-coordinate of the negative muon vertex          |
-|`muMinusVtxZ`         | `std::vector<double>` | Z-coordinate of the negative muon vertex          |
-|`muPlusVtxPx`         | `std::vector<double>` | X-component of the positive muon vertex momentum  |
-|`muPlusVtxPy`         | `std::vector<double>` | Y-component of the positive muon vertex momentum  |
-|`muPlusVtxPz`         | `std::vector<double>` | Z-component of the positive muon vertex momentum  |
-|`muMinusVtxPx`        | `std::vector<double>` | X-component of the negative muon vertex momentum  |
-|`muMinusVtxPy`        | `std::vector<double>` | Y-component of the negative muon vertex momentum  |   
-|`muMinusVtxPz`        | `std::vector<double>` | Z-component of the negative muon vertex momentum  |   
-|`top_bot`             | `std::vector<bool>`   | Flag indicating top to bottom relation            |   
-|`bot_top`             | `std::vector<bool>`   | Flag indicating bottom to top relation            |   
-                                                                                                      
-                                                                                                      
 ``` Compilation before running the Fun4All macro                                                      
 source setup.sh                                                                                       
 cmake-this                                                                                            

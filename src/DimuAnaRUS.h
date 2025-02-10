@@ -51,7 +51,6 @@ class DimuAnaRUS: public SubsysReco {
 
 	void SetSaveOnlyDimuon(bool enable) { saveDimuonOnly = enable; }
 
-
 	DimuAnaRUS(const std::string& name="DimuAnaRUS");
 	virtual ~DimuAnaRUS();
 	int Init(PHCompositeNode *startNode);
@@ -62,11 +61,15 @@ class DimuAnaRUS: public SubsysReco {
 
 	void SetTreeName(const std::string& name) { m_tree_name = name; }
 	void SetFileName(const std::string& name) { m_file_name = name; }
-	void ResetBranches();
+	void ResetHitBranches();
+	void ResetTrueBranches();
+	void ResetRecoBranches();
 
 	private:
 
 	// Scalar variables
+	int eventID;
+	/*
 	int runID;
 	int spillID;
 	int eventID;
@@ -75,91 +78,50 @@ class DimuAnaRUS: public SubsysReco {
 	int rfIntensity[33];
 	int fpgaTrigger[5] = {0};
 	int nimTrigger[5] = {0};
+	*/
 
+	std::vector<int> hitID;
+	std::vector<int> trackID;
 	std::vector<int> detectorID;
 	std::vector<int> elementID;
 	std::vector<double> tdcTime;
 	std::vector<double> driftDistance;
-	std::vector<bool> hitsInTime;
-	// MC track data
+	//std::vector<bool> hitsInTime;
 	// True track data
-	std::vector<int> trueTrackCharges;
-	std::vector<int> trueTrackID;
-	std::vector<double> trueVtxPosX;
-	std::vector<double> trueVtxPosY;
-	std::vector<double> trueVtxPosZ;
-	std::vector<double> trueVtxMomPx;
-	std::vector<double> trueVtxMomPy;
-	std::vector<double> trueVtxMomPz;
+	std::vector<int> gCharge;
+	//std::vector<int> processID;
+	//std::vector<int> sourceFlag;
+	std::vector<double> gvx;
+	std::vector<double> gvy;
+	std::vector<double> gvz;
+	std::vector<double> gpx;
+	std::vector<double> gpy;
+	std::vector<double> gpz;
 
-	std::vector<double> trueSt1PosX;
-	std::vector<double> trueSt1PosY;
-	std::vector<double> trueSt1PosZ;
-	std::vector<double> trueSt1MomPx;
-	std::vector<double> trueSt1MomPy;
-	std::vector<double> trueSt1MomPz;
+	std::vector<double> rec_dimu_vx;
+        std::vector<double> rec_dimu_vy;
+        std::vector<double> rec_dimu_vz;
+        std::vector<double> rec_dimu_px;
+        std::vector<double> rec_dimu_py;
+        std::vector<double> rec_dimu_pz;
+        std::vector<double> rec_dimu_mass;
+        std::vector<double> rec_dimu_x1;
+        std::vector<double> rec_dimu_x2;
+        std::vector<double> rec_dimu_xf;
 
-	std::vector<double> trueSt3PosX;
-	std::vector<double> trueSt3PosY;
-	std::vector<double> trueSt3PosZ;
-	std::vector<double> trueSt3MomPx;
-	std::vector<double> trueSt3MomPy;
-	std::vector<double> trueSt3MomPz;
+        std::vector<double> rec_vx_mup;
+        std::vector<double> rec_vy_mup;
+        std::vector<double> rec_vz_mup;
+        std::vector<double> rec_px_mup;
+        std::vector<double> rec_py_mup;
+        std::vector<double> rec_pz_mup;
 
-	std::vector<int> trueDimuonPdgId;
-	std::vector<int> trueDimuonId;
-	std::vector<double> trueDimuonVtxX;
-	std::vector<double> trueDimuonVtxY;
-	std::vector<double> trueDimuonVtxZ;
-
-	std::vector<double> trueDimuonVtxPx;
-	std::vector<double> trueDimuonVtxPy;
-	std::vector<double> trueDimuonVtxPz;
-	std::vector<double> trueDimuonVtxM;
-
-	std::vector<double> trueDimuonPosPx;
-	std::vector<double> trueDimuonPosPy;
-	std::vector<double> trueDimuonPosPz;
-
-	std::vector<double> trueDimuonNegPx;
-	std::vector<double> trueDimuonNegPy;
-	std::vector<double> trueDimuonNegPz;
-
-
-	//Dimuon variables for MC or Data
-	// Dimuon variables for MC or Data
-	std::vector<double> dimuonVtxX;
-	std::vector<double> dimuonVtxY;
-	std::vector<double> dimuonVtxZ;
-	std::vector<double> dimuonVtxPx;
-	std::vector<double> dimuonVtxPy;
-	std::vector<double> dimuonVtxPz;
-	std::vector<double> dimuonMass;
-	std::vector<double> dimuonX1;
-	std::vector<double> dimuonX2;
-	std::vector<double> dimuonXf;
-
-	std::vector<double> muPlusVtxX;
-	std::vector<double> muPlusVtxY;
-	std::vector<double> muPlusVtxZ;
-	std::vector<double> muMinusVtxX;
-	std::vector<double> muMinusVtxY;
-	std::vector<double> muMinusVtxZ;
-
-	std::vector<double> muPlusVtxPx;
-	std::vector<double> muPlusVtxPy;
-	std::vector<double> muPlusVtxPz;
-	std::vector<double> muMinusVtxPx;
-	std::vector<double> muMinusVtxPy;
-	std::vector<double> muMinusVtxPz;
-
-	std::vector<double> muPlusChi2Target;
-	std::vector<double> muPlusChi2Dump;
-	std::vector<double> muPlusChi2Upstream;
-
-	std::vector<double> muMinusChi2Target;
-	std::vector<double> muMinusChi2Dump;
-	std::vector<double> muMinusChi2Upstream;
+	std::vector<double> rec_vx_mum;
+        std::vector<double> rec_vy_mum;
+        std::vector<double> rec_vz_mum;
+        std::vector<double> rec_px_mum;
+        std::vector<double> rec_py_mum;
+        std::vector<double> rec_pz_mum;
 
 	std::vector<bool> top_bot;
 	std::vector<bool> bot_top;

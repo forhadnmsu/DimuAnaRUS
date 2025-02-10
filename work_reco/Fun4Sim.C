@@ -72,7 +72,7 @@ int Fun4Sim(const string Vect_in, const string DST_out, const int n_evt=20){
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
 	dimuAna->SetTreeName("tree");
 	dimuAna->SetOutputFileName(DST_out);
-	dimuAna->SetMCMode(true);
+	//dimuAna->SetMCTrueMode(true);
 	dimuAna->SetDataTriggerEmu(false); 
 	dimuAna->SetSaveOnlyDimuon(true);
 	dimuAna->SetRecoMode(true);

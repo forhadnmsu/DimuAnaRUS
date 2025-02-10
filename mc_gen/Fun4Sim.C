@@ -41,9 +41,9 @@ int Fun4Sim(const int nevent = 10)
 	const double KMAGSTR = -1.025;
 
 	//! Particle generator flag.  Only one of these must be true.
-	const bool gen_pythia8  = false;
+	const bool gen_pythia8  = true;
 	const bool gen_cosmic   = false;
-	const bool gen_particle = true;
+	const bool gen_particle = false;
 	const bool read_hepmc   = false;
 	const bool gen_e906dim =  false; // cf. SQPrimaryParticleGen
 
@@ -89,8 +89,8 @@ int Fun4Sim(const int nevent = 10)
 	if(gen_pythia8) {    
 		PHPythia8 *pythia8 = new PHPythia8();
 		//pythia8->Verbosity(99);
-		pythia8->set_config_file("phpythia8_DY.cfg");
-		//pythia8->set_config_file("phpythia8_Jpsi.cfg"); // Jpsi, Jpsi_direct, psip
+		//pythia8->set_config_file("phpythia8_DY.cfg");
+		pythia8->set_config_file("phpythia8_Jpsi.cfg"); // Jpsi, Jpsi_direct, psip
 		if(SQ_vtx_gen) pythia8->enableLegacyVtxGen();
 		else{
 			pythia8->set_vertex_distribution_mean(0, 0, target_coil_pos_z, 0);
@@ -140,7 +140,8 @@ int Fun4Sim(const int nevent = 10)
 		if(FMAGSTR>0)
 			genp->set_pxpypz_range(-6,6, -3,3, 10,100);
 		else
-			genp->set_pxpypz_range(-6.0,6.0, -4,4,  10, 60);
+			{genp->set_pxpypz_range(-6.0,6.0, -4,4, 30, 60);
+			genp->set_eta_range(6.0, 8.0);}
 
 		//genp->set_pt_range(0.0,4.0, 0.6);
 		//genp->set_eta_range(2.0, 6.0); 
@@ -165,9 +166,10 @@ int Fun4Sim(const int nevent = 10)
 		if(FMAGSTR>0)
 			genm->set_pxpypz_range(-6,6, -3,3, 10,100);
 		else
-			genm->set_pxpypz_range(-6,6, -4,4, 10,60);
+			{genm->set_pxpypz_range(-6,6, -4,4, 30,60);
+			genm->set_eta_range(6.0, 8.0);}
 
-		genm->Verbosity(0);
+		genm->Verbosity(2);
 		se->registerSubsystem(genm);
 	}
 
@@ -247,13 +249,10 @@ int Fun4Sim(const int nevent = 10)
 
 	se->registerSubsystem(new TruthNodeMaker());
 
-	  //Apply additonal cut after event generation
-        MuonTrackFilter* muon_filter = new MuonTrackFilter();
-        muon_filter->SetAngleThreshold(0.0, 5.0); //in degree
-        se->registerSubsystem(muon_filter);
-
-	
-
+	//Apply additonal cut after event generation
+        //MuonTrackFilter* muon_filter = new MuonTrackFilter();
+        //muon_filter->SetAngleThreshold(0.0, 50.0); //in degree
+        //se->registerSubsystem(muon_filter);
 
 	/// Save only events that are in the geometric acceptance.
 	SQGeomAcc* geom_acc = new SQGeomAcc();
@@ -308,7 +307,6 @@ int Fun4Sim(const int nevent = 10)
 	SQVertexing* vtx = new SQVertexing();
 	vtx->Verbosity(1);
 	se->registerSubsystem(vtx);
-
 	if(read_hepmc) {
 		Fun4AllHepMCInputManager *in = new Fun4AllHepMCInputManager("HEPMCIN");
 		in->Verbosity(10);
@@ -334,21 +332,16 @@ int Fun4Sim(const int nevent = 10)
 	//  se->registerOutputManager(out);
 	//}
 
-
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
         dimuAna->SetTreeName("tree");
         dimuAna->SetOutputFileName("RUS.root");
         dimuAna->SetMCTrueMode(true);
         dimuAna->SetSaveOnlyDimuon(true);
-	dimuAna->SetMCDimuonMode(false);
         dimuAna->SetRecoMode(true);
         se->registerSubsystem(dimuAna);
-  
 //      se->registerSubsystem(new DimuAnaRUS());
-
 	const bool count_only_good_events = true;
 	se->run(nevent, count_only_good_events);
-
 	PHGeomUtility::ExportGeomtry(se->topNode(),"geom.root");
 
 	// finish job - close and save output files
@@ -356,7 +349,6 @@ int Fun4Sim(const int nevent = 10)
 	se->PrintTimer();
 	rc->WriteToFile("recoConsts.tsv");
 	std::cout << "All done" << std::endl;
-
 	// cleanup - delete the server and exit
 	delete se;
 	gSystem->Exit(0);
