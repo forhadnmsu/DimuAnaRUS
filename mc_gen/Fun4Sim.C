@@ -65,7 +65,7 @@ int Fun4Sim(const int nevent = 10)
 		rc->set_DoubleFlag("FMAGSTR", 0.);
 	}
 	if(SQ_vtx_gen) { // cf. SQPrimaryVertexGen
-		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Dump"); // All, Target, Dump, TargetDumpGap or Manual
+		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "All"); // All, Target, Dump, TargetDumpGap or Manual
 		//rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Target"); // All, Target, Dump, TargetDumpGap or Manual
 		//rc->set_DoubleFlag("VTX_GEN_Z_START",  50.0); // For "Manual"
 		//rc->set_DoubleFlag("VTX_GEN_Z_STOP" , 100.0); // For "Manual"
@@ -253,7 +253,7 @@ int Fun4Sim(const int nevent = 10)
         //MuonTrackFilter* muon_filter = new MuonTrackFilter();
         //muon_filter->SetAngleThreshold(0.0, 50.0); //in degree
         //se->registerSubsystem(muon_filter);
-
+/*
 	/// Save only events that are in the geometric acceptance.
 	SQGeomAcc* geom_acc = new SQGeomAcc();
 	//geom_acc->SetMuonMode(SQGeomAcc::PAIR); // PAIR, PAIR_TBBT, SINGLE, SINGLE_T, etc.
@@ -263,7 +263,7 @@ int Fun4Sim(const int nevent = 10)
 	se->registerSubsystem(geom_acc);
 	// Make SQ nodes for truth info
 	se->registerSubsystem(new TruthNodeMaker());
-
+*/
 	// embedding
 	if(embedding_opt == 1) {
 		SRawEventEmbed *embed = new SRawEventEmbed("SRawEventEmbed");
@@ -289,7 +289,7 @@ int Fun4Sim(const int nevent = 10)
 	//se->registerSubsystem(evt_filter);
 	// Tracking module
 	// input - we need a dummy to drive the event loop
-
+/*
 
 	SQReco* reco = new SQReco();
 	reco->Verbosity(1);
@@ -307,6 +307,7 @@ int Fun4Sim(const int nevent = 10)
 	SQVertexing* vtx = new SQVertexing();
 	vtx->Verbosity(1);
 	se->registerSubsystem(vtx);
+*/
 	if(read_hepmc) {
 		Fun4AllHepMCInputManager *in = new Fun4AllHepMCInputManager("HEPMCIN");
 		in->Verbosity(10);
@@ -334,13 +335,13 @@ int Fun4Sim(const int nevent = 10)
 
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
         dimuAna->SetTreeName("tree");
+	dimuAna->SetMCTrueMode(true);
         dimuAna->SetOutputFileName("RUS.root");
-        dimuAna->SetMCTrueMode(true);
-        dimuAna->SetSaveOnlyDimuon(true);
-        dimuAna->SetRecoMode(true);
+        dimuAna->SetSaveOnlyDimuon(false);
+        dimuAna->SetRecoMode(false);
         se->registerSubsystem(dimuAna);
-//      se->registerSubsystem(new DimuAnaRUS());
-	const bool count_only_good_events = true;
+
+	const bool count_only_good_events = false;
 	se->run(nevent, count_only_good_events);
 	PHGeomUtility::ExportGeomtry(se->topNode(),"geom.root");
 
