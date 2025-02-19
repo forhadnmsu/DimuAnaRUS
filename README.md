@@ -60,8 +60,6 @@ To include true track or reconstructed variables in your RUS file, follow these 
 
 
 ## Reco-Level Variables
-
-```plaintext
 | Variable Name     | Type                  | Description                                       |
 |-------------------|-----------------------|--------------------------------------------------|
 | `rec_charge`     | `std::vector<int>`     | Charge of the reconstructed particle             |
