@@ -2,7 +2,7 @@
 #include <top/G4_Target.C>
 #include <top/G4_InsensitiveVolumes.C>
 #include <top/G4_SensitiveDetectors.C>
-R__LOAD_LIBRARY(libdimu_ana_rus)
+R__LOAD_LIBRARY(libe1039_track_gen)
 R__LOAD_LIBRARY(libfun4all)
 R__LOAD_LIBRARY(libPHPythia8)
 R__LOAD_LIBRARY(libg4detectors)
@@ -17,7 +17,7 @@ R__LOAD_LIBRARY(libSQPrimaryGen)
 
 using namespace std;
 
-int Fun4Sim(const int nevent = 10)
+int Fun4SimComb(const int nevent = 10)
 {
 	const double target_coil_pos_z = -300;
 	const int nmu = 1;
@@ -41,11 +41,8 @@ int Fun4Sim(const int nevent = 10)
 	const double KMAGSTR = -1.025;
 
 	//! Particle generator flag.  Only one of these must be true.
-	const bool gen_pythia8  = true;
-	const bool gen_cosmic   = false;
-	const bool gen_particle = false;
+	const bool gen_particle = true;
 	const bool read_hepmc   = false;
-	const bool gen_e906dim =  false; // cf. SQPrimaryParticleGen
 
 	//! Use SQPrimaryVertexGen or not.
 	const bool SQ_vtx_gen = true;
@@ -58,14 +55,8 @@ int Fun4Sim(const int nevent = 10)
 	rc->set_DoubleFlag("SIGY_BEAM", 0.3);
 	rc->set_DoubleFlag("Z_UPSTREAM", -700.);
 
-	if(gen_cosmic) {
-		rc->init("cosmic");
-		rc->set_BoolFlag("COARSE_MODE", true);
-		rc->set_DoubleFlag("KMAGSTR", 0.);
-		rc->set_DoubleFlag("FMAGSTR", 0.);
-	}
 	if(SQ_vtx_gen) { // cf. SQPrimaryVertexGen
-		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "All"); // All, Target, Dump, TargetDumpGap or Manual
+		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Dump"); // All, Target, Dump, TargetDumpGap or Manual
 		//rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Target"); // All, Target, Dump, TargetDumpGap or Manual
 		//rc->set_DoubleFlag("VTX_GEN_Z_START",  50.0); // For "Manual"
 		//rc->set_DoubleFlag("VTX_GEN_Z_STOP" , 100.0); // For "Manual"
@@ -85,126 +76,41 @@ int Fun4Sim(const int nevent = 10)
 	se->Verbosity(0);
 
 
-	// pythia8
-	if(gen_pythia8) {    
-		PHPythia8 *pythia8 = new PHPythia8();
-		//pythia8->Verbosity(99);
-		//pythia8->set_config_file("phpythia8_DY.cfg");
-		pythia8->set_config_file("phpythia8_Jpsi.cfg"); // Jpsi, Jpsi_direct, psip
-		if(SQ_vtx_gen) pythia8->enableLegacyVtxGen();
-		else{
-			pythia8->set_vertex_distribution_mean(0, 0, target_coil_pos_z, 0);
-		} 
-		pythia8->set_embedding_id(1);
-		se->registerSubsystem(pythia8);
-
-		pythia8->set_trigger_AND();
-
-		PHPy8ParticleTrigger* trigger_mup = new PHPy8ParticleTrigger();
-		trigger_mup->AddParticles("-13");
-		//trigger_mup->SetPxHighLow(7, 0.5);
-		//trigger_mup->SetPyHighLow(6, -6);
-		trigger_mup->SetPzHighLow(120, 10);
-		pythia8->register_trigger(trigger_mup);
-
-		PHPy8ParticleTrigger* trigger_mum = new PHPy8ParticleTrigger();
-		trigger_mum->AddParticles("13");
-		//trigger_mum->SetPxHighLow(-0.5, 7);
-		//trigger_mum->SetPyHighLow(6, -6);
-		trigger_mum->SetPzHighLow(120, 10);
-		pythia8->register_trigger(trigger_mum);
-	}
-
-	if(gen_pythia8 || read_hepmc) {
+	if(read_hepmc) {
 		HepMCNodeReader *hr = new HepMCNodeReader();
 		hr->set_particle_filter_on(true);
 		hr->insert_particle_filter_pid(13);
 		hr->insert_particle_filter_pid(-13);
 		se->registerSubsystem(hr);
 	}
+
 	// multi particle gun
 	if(gen_particle) {
-		PHG4SimpleEventGenerator *genp = new PHG4SimpleEventGenerator("MUP");
+		PHG4E1039TrackPairGen *genp = new PHG4E1039TrackPairGen("MUP");
 		genp->set_seed(125);
 		genp->add_particles("mu+", nmu);  // mu+,e+,proton,pi+,Upsilon
+		genp->set_seed(120);
+		genp->add_particles("mu-", nmu);
 		if (SQ_vtx_gen) genp->enableLegacyVtxGen();
 		else{
-			genp->set_vertex_distribution_function(PHG4SimpleEventGenerator::Uniform,
-					PHG4SimpleEventGenerator::Uniform,
-					PHG4SimpleEventGenerator::Uniform);
+			genp->set_vertex_distribution_function(PHG4E1039TrackPairGen::Uniform,
+					PHG4E1039TrackPairGen::Uniform,
+					PHG4E1039TrackPairGen::Uniform);
 			genp->set_vertex_distribution_mean(0.0, 0.0, target_coil_pos_z);
 			genp->set_vertex_distribution_width(0.0, 0.0, 0.0);
-			genp->set_vertex_size_function(PHG4SimpleEventGenerator::Uniform);
+			genp->set_vertex_size_function(PHG4E1039TrackPairGen::Uniform);
 			genp->set_vertex_size_parameters(0.0, 0.0);
 		}
 		if(FMAGSTR>0)
 			genp->set_pxpypz_range(-6,6, -3,3, 10,100);
 		else
-			{genp->set_pxpypz_range(-6.0,6.0, -4,4, 30, 60);
-			genp->set_eta_range(6.0, 8.0);}
-
-		//genp->set_pt_range(0.0,4.0, 0.6);
-		//genp->set_eta_range(2.0, 6.0); 
-		genp->Verbosity(0);
+			genp->set_pxpypz_range(-4.0,4.0, -4,4, 30, 90);
+		genp->set_max_opening_angle(3.0);
+		//genp->set_pt_range(0.0, 3.0);
+		//genp->Verbosity(1);
 		se->registerSubsystem(genp);
 	}
 
-	if(gen_particle) {
-		PHG4SimpleEventGenerator *genm = new PHG4SimpleEventGenerator("MUM");
-		genm->set_seed(12);
-		genm->add_particles("mu-", nmu);  // mu+,e+,proton,pi+,Upsilon
-		if (SQ_vtx_gen) genm->enableLegacyVtxGen();
-		else{
-			genm->set_vertex_distribution_function(PHG4SimpleEventGenerator::Uniform,
-					PHG4SimpleEventGenerator::Uniform,
-					PHG4SimpleEventGenerator::Uniform);
-			genm->set_vertex_distribution_mean(0.0, 0.0, target_coil_pos_z);
-			genm->set_vertex_distribution_width(0.0, 0.0, 0.0);
-			genm->set_vertex_size_function(PHG4SimpleEventGenerator::Uniform);
-			genm->set_vertex_size_parameters(0.0, 0.0);
-		}
-		if(FMAGSTR>0)
-			genm->set_pxpypz_range(-6,6, -3,3, 10,100);
-		else
-			{genm->set_pxpypz_range(-6,6, -4,4, 30,60);
-			genm->set_eta_range(6.0, 8.0);}
-
-		genm->Verbosity(2);
-		se->registerSubsystem(genm);
-	}
-
-	// E906LegacyGen
-	if(gen_e906dim){
-		SQPrimaryParticleGen *e906legacy = new  SQPrimaryParticleGen();
-		const bool pythia_gen = false;
-		const bool drellyan_gen = false;
-		const bool JPsi_gen = true;
-		const bool Psip_gen = false;  
-
-		if(drellyan_gen){
-			e906legacy->set_xfRange(0.1, 0.5); //[-1.,1.]
-			e906legacy->set_massRange(1.0, 8.0);
-			e906legacy->enableDrellYanGen();
-		}
-		if(Psip_gen){ 
-			e906legacy->set_xfRange(0.1, 0.5); //[-1.,1.]
-			e906legacy->enablePsipGen();
-		}
-		if(JPsi_gen){
-			e906legacy->set_xfRange(0.1, 0.5); //[-1.,1.]
-			e906legacy->enableJPsiGen();
-		}
-		if(pythia_gen){ 
-			e906legacy->enablePythia();
-			e906legacy->set_config_file("phpythia8_DY.cfg");
-		}
-		se->registerSubsystem(e906legacy);
-	}
-
-	if(gen_cosmic) {
-		SQCosmicGen* cosmicGen = new SQCosmicGen();
-		se->registerSubsystem(cosmicGen);
-	}
 
 	// Fun4All G4 module
 	PHG4Reco *g4Reco = new PHG4Reco();
@@ -253,7 +159,7 @@ int Fun4Sim(const int nevent = 10)
         //MuonTrackFilter* muon_filter = new MuonTrackFilter();
         //muon_filter->SetAngleThreshold(0.0, 50.0); //in degree
         //se->registerSubsystem(muon_filter);
-/*
+
 	/// Save only events that are in the geometric acceptance.
 	SQGeomAcc* geom_acc = new SQGeomAcc();
 	//geom_acc->SetMuonMode(SQGeomAcc::PAIR); // PAIR, PAIR_TBBT, SINGLE, SINGLE_T, etc.
@@ -263,7 +169,7 @@ int Fun4Sim(const int nevent = 10)
 	se->registerSubsystem(geom_acc);
 	// Make SQ nodes for truth info
 	se->registerSubsystem(new TruthNodeMaker());
-*/
+
 	// embedding
 	if(embedding_opt == 1) {
 		SRawEventEmbed *embed = new SRawEventEmbed("SRawEventEmbed");
@@ -306,7 +212,6 @@ int Fun4Sim(const int nevent = 10)
 	SQVertexing* vtx = new SQVertexing();
 	vtx->Verbosity(1);
 	se->registerSubsystem(vtx);
-
 	if(read_hepmc) {
 		Fun4AllHepMCInputManager *in = new Fun4AllHepMCInputManager("HEPMCIN");
 		in->Verbosity(10);
@@ -326,17 +231,11 @@ int Fun4Sim(const int nevent = 10)
 	Fun4AllDstOutputManager *out = new Fun4AllDstOutputManager("DSTOUT", "DST.root");
 	se->registerOutputManager(out);
 
-	//if(gen_pythia8 && !read_hepmc) {
-	//  Fun4AllHepMCOutputManager *out = new Fun4AllHepMCOutputManager("HEPMCOUT", "hepmcout.txt");
-	//  out->set_embedding_id(1);
-	//  se->registerOutputManager(out);
-	//}
-
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
         dimuAna->SetTreeName("tree");
-	dimuAna->SetMCTrueMode(true);
         dimuAna->SetOutputFileName("RUS.root");
         dimuAna->SetSaveOnlyDimuon(true);
+        dimuAna->SetMCTrueMode(true);
         dimuAna->SetRecoMode(true);
         se->registerSubsystem(dimuAna);
 

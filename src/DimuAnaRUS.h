@@ -103,6 +103,11 @@ class DimuAnaRUS: public SubsysReco {
 	std::vector<double> gpy;
 	std::vector<double> gpz;
 
+	std::vector<double> gx_st1, gy_st1, gz_st1;
+	std::vector<double> gpx_st1, gpy_st1, gpz_st1;
+	std::vector<double> gx_st3, gy_st3, gz_st3;
+	std::vector<double> gpx_st3, gpy_st3, gpz_st3;
+
 	std::vector<double> rec_dimu_vx;
         std::vector<double> rec_dimu_vy;
         std::vector<double> rec_dimu_vz;
@@ -113,23 +118,16 @@ class DimuAnaRUS: public SubsysReco {
         std::vector<double> rec_dimu_x1;
         std::vector<double> rec_dimu_x2;
         std::vector<double> rec_dimu_xf;
+	//std::vector<bool> top_bot;
+	//std::vector<bool> bot_top;
 
-        std::vector<double> rec_vx_mup;
-        std::vector<double> rec_vy_mup;
-        std::vector<double> rec_vz_mup;
-        std::vector<double> rec_px_mup;
-        std::vector<double> rec_py_mup;
-        std::vector<double> rec_pz_mup;
-
-	std::vector<double> rec_vx_mum;
-        std::vector<double> rec_vy_mum;
-        std::vector<double> rec_vz_mum;
-        std::vector<double> rec_px_mum;
-        std::vector<double> rec_py_mum;
-        std::vector<double> rec_pz_mum;
-
-	std::vector<bool> top_bot;
-	std::vector<bool> bot_top;
+	std::vector<int> rec_charge;
+	std::vector<double> rec_vx, rec_vy, rec_vz;
+	std::vector<double> rec_px, rec_py, rec_pz;
+	std::vector<double> rec_x_st1, rec_y_st1, rec_z_st1;
+	std::vector<double> rec_px_st1, rec_py_st1, rec_pz_st1;
+	std::vector<double> rec_x_st3, rec_y_st3, rec_z_st3;
+	std::vector<double> rec_px_st3, rec_py_st3, rec_pz_st3;
 };
 
 #endif // _DimuAnaRUS.h_
