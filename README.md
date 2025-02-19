@@ -45,35 +45,55 @@ To include true track or reconstructed variables in your RUS file, follow these 
 | `gpx`        | `std::vector<double>` | X-component of the momentum at the vertex    |
 | `gpy`        | `std::vector<double>` | Y-component of the momentum at the vertex    |
 | `gpz`        | `std::vector<double>` | Z-component of the momentum at the vertex    |
+| `gx_st1`     | `std::vector<double>` | X-coordinate at station 1                    |
+| `gy_st1`     | `std::vector<double>` | Y-coordinate at station 1                    |
+| `gz_st1`     | `std::vector<double>` | Z-coordinate at station 1                    |
+| `gpx_st1`    | `std::vector<double>` | X-component of momentum at station 1         |
+| `gpy_st1`    | `std::vector<double>` | Y-component of momentum at station 1         |
+| `gpz_st1`    | `std::vector<double>` | Z-component of momentum at station 1         |
+| `gx_st3`     | `std::vector<double>` | X-coordinate at station 3                    |
+| `gy_st3`     | `std::vector<double>` | Y-coordinate at station 3                    |
+| `gz_st3`     | `std::vector<double>` | Z-coordinate at station 3                    |
+| `gpx_st3`    | `std::vector<double>` | X-component of momentum at station 3         |
+| `gpy_st3`    | `std::vector<double>` | Y-component of momentum at station 3         |
+| `gpz_st3`    | `std::vector<double>` | Z-component of momentum at station 3         |
 
 
-##Reco-Level Variables
-| Variable Name        | Type                  | Description                                       |
-|----------------------|-----------------------|-------------------------------------------------- |
-| `rec_vx_mup`        | `std::vector<double>`  | X-coordinate of the reconstructed mu+ vertex      |
-| `rec_vy_mup`        | `std::vector<double>`  | Y-coordinate of the reconstructed mu+ vertex      |
-| `rec_vz_mup`        | `std::vector<double>`  | Z-coordinate of the reconstructed mu+ vertex      |
-| `rec_px_mup`        | `std::vector<double>`  | X-component of the reconstructed mu+ momentum     |
-| `rec_py_mup`        | `std::vector<double>`  | Y-component of the reconstructed mu+ momentum     |
-| `rec_pz_mup`        | `std::vector<double>`  | Z-component of the reconstructed mu+ momentum     |
-| `rec_vx_mum`        | `std::vector<double>`  | X-coordinate of the reconstructed mu- vertex      |
-| `rec_vy_mum`        | `std::vector<double>`  | Y-coordinate of the reconstructed mu- vertex      |
-| `rec_vz_mum`        | `std::vector<double>`  | Z-coordinate of the reconstructed mu- vertex      |
-| `rec_px_mum`        | `std::vector<double>`  | X-component of the reconstructed mu- momentum     |
-| `rec_py_mum`        | `std::vector<double>`  | Y-component of the reconstructed mu- momentum     |
-| `rec_pz_mum`        | `std::vector<double>`  | Z-component of the reconstructed mu- momentum     |
-| `rec_dimu_vx`       | `std::vector<double>`  | X-coordinate of the reconstructed dimuon vertex   |
-| `rec_dimu_vy`       | `std::vector<double>`  | Y-coordinate of the reconstructed dimuon vertex   |
-| `rec_dimu_vz`       | `std::vector<double>`  | Z-coordinate of the reconstructed dimuon vertex   |
-| `rec_dimu_px`       | `std::vector<double>`  | X-component of the reconstructed dimuon momentum  |
-| `rec_dimu_py`       | `std::vector<double>`  | Y-component of the reconstructed dimuon momentum  |
-| `rec_dimu_pz`       | `std::vector<double>`  | Z-component of the reconstructed dimuon momentum  |
-| `rec_dimu_mass`     | `std::vector<double>`  | Mass of the reconstructed dimuon system           |
-| `rec_dimu_xf`       | `std::vector<double>`  | Xf kinematic variable for the reconstructed dimuon|
-| `rec_dimu_x1`       | `std::vector<double>`  | X1 kinematic variable for the reconstructed dimuon|
-| `rec_dimu_x2`       | `std::vector<double>`  | X2 kinematic variable for the reconstructed dimuon|
-| `top_bot`           | `std::vector<bool>`    | Flag indicating top-to-bottom relation            |
-| `bot_top`           | `std::vector<bool>`    | Flag indicating bottom-to-top relation            |
+## Reco-Level Variables
+
+```plaintext
+| Variable Name     | Type                  | Description                                       |
+|-------------------|-----------------------|--------------------------------------------------|
+| `rec_charge`     | `std::vector<int>`     | Charge of the reconstructed particle             |
+| `rec_vx`        | `std::vector<double>`  | X-coordinate of the reconstructed vertex         |
+| `rec_vy`        | `std::vector<double>`  | Y-coordinate of the reconstructed vertex         |
+| `rec_vz`        | `std::vector<double>`  | Z-coordinate of the reconstructed vertex         |
+| `rec_px`        | `std::vector<double>`  | X-component of the reconstructed momentum        |
+| `rec_py`        | `std::vector<double>`  | Y-component of the reconstructed momentum        |
+| `rec_pz`        | `std::vector<double>`  | Z-component of the reconstructed momentum        |
+| `rec_x_st1`     | `std::vector<double>`  | X-coordinate at station 1                        |
+| `rec_y_st1`     | `std::vector<double>`  | Y-coordinate at station 1                        |
+| `rec_z_st1`     | `std::vector<double>`  | Z-coordinate at station 1                        |
+| `rec_px_st1`    | `std::vector<double>`  | X-momentum at station 1                          |
+| `rec_py_st1`    | `std::vector<double>`  | Y-momentum at station 1                          |
+| `rec_pz_st1`    | `std::vector<double>`  | Z-momentum at station 1                          |
+| `rec_x_st3`     | `std::vector<double>`  | X-coordinate at station 3                        |
+| `rec_y_st3`     | `std::vector<double>`  | Y-coordinate at station 3                        |
+| `rec_z_st3`     | `std::vector<double>`  | Z-coordinate at station 3                        |
+| `rec_px_st3`    | `std::vector<double>`  | X-momentum at station 3                          |
+| `rec_py_st3`    | `std::vector<double>`  | Y-momentum at station 3                          |
+| `rec_pz_st3`    | `std::vector<double>`  | Z-momentum at station 3                          |
+| `rec_dimu_vx`   | `std::vector<double>`  | X-coordinate of the reconstructed dimuon vertex  |
+| `rec_dimu_vy`   | `std::vector<double>`  | Y-coordinate of the reconstructed dimuon vertex  |
+| `rec_dimu_vz`   | `std::vector<double>`  | Z-coordinate of the reconstructed dimuon vertex  |
+| `rec_dimu_px`   | `std::vector<double>`  | X-component of the reconstructed dimuon momentum |
+| `rec_dimu_py`   | `std::vector<double>`  | Y-component of the reconstructed dimuon momentum |
+| `rec_dimu_pz`   | `std::vector<double>`  | Z-component of the reconstructed dimuon momentum |
+| `rec_dimu_mass` | `std::vector<double>`  | Mass of the reconstructed dimuon system          |
+| `rec_dimu_xf`   | `std::vector<double>`  | Xf for the reconstructed dimuon |
+| `rec_dimu_x1`   | `std::vector<double>`  | X1 for the reconstructed dimuon |
+| `rec_dimu_x2`   | `std::vector<double>`  | X2 for the reconstructed dimuon |
+
 
 ``` Compilation before running the Fun4All macro                                                      
 source setup.sh                                                                                       
