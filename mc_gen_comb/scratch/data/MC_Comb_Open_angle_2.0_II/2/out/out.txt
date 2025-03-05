@@ -1,0 +1,16 @@
+hello, grid.
+HOST = spinquestgpvm01.fnal.gov
+/seaquest/users/mhossain/DimuAnaRUS/mc_gen_comb/scratch/data/MC_Comb_Open_angle_2.0_II/2
+total 6.0K
+-rw-r--r-- 1 mhossain 500 8.6K Feb 23 11:19 Fun4Sim.C
+-rwxr-xr-x 1 mhossain 500 1.3K Feb 21 08:26 gridrun.sh
+drwxr-xr-x 2 mhossain 500    3 Feb 23 11:23 input
+drwxr-xr-x 4 mhossain 500    4 Feb 19 13:00 inst
+-rw-r--r-- 1 mhossain 500  221 Feb 23 11:23 log_gridrun.txt
+drwxr-xr-t 2 mhossain 500    3 Feb 23 11:23 out
+-rw-r--r-- 1 mhossain 500  134 Feb 23 11:23 out.txt
+-rw-r--r-- 1 mhossain 500  874 Feb 21 08:26 phpythia8_DY.cfg
+-rw-r--r-- 1 mhossain 500 1.4K Feb 21 08:26 phpythia8_Jpsi.cfg
+-rw-r--r-- 1 mhossain 500 1.4K Feb 21 08:26 phpythia8_Jpsi_direct.cfg
+-rw-r--r-- 1 mhossain 500 1.6K Feb 21 08:26 phpythia8_psip.cfg
+-rw-r--r-- 1 mhossain 500 1.4K Jan 10 10:44 setup.sh
