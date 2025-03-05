@@ -19,15 +19,12 @@ int Fun4All(const string DST_in, const string DST_out, const int n_evt=0){
 	in->fileopen(DST_in);
 	
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
-	dimuAna->SetTreeName("tree");
-	dimuAna->SetOutputFileName(DST_out);
-	dimuAna->SetMCMode(false);
-	dimuAna->SetDataTriggerEmu(true); 
-	dimuAna->SetSaveOnlyDimuon(true);
-	dimuAna->SetRecoMode(true);
-
-	se->registerSubsystem(dimuAna);
-	se->registerSubsystem(new DimuAnaRUS());
+        dimuAna->SetTreeName("tree");
+	dimuAna->SetMCTrueMode(false);
+        dimuAna->SetOutputFileName("RUS.root");
+        dimuAna->SetSaveOnlyDimuon(false);
+        dimuAna->SetRecoMode(false);
+        se->registerSubsystem(dimuAna);
 
 	se->run(n_evt);
 	se->End();

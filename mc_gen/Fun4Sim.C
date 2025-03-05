@@ -253,7 +253,6 @@ int Fun4Sim(const int nevent = 10)
         //MuonTrackFilter* muon_filter = new MuonTrackFilter();
         //muon_filter->SetAngleThreshold(0.0, 50.0); //in degree
         //se->registerSubsystem(muon_filter);
-/*
 	/// Save only events that are in the geometric acceptance.
 	SQGeomAcc* geom_acc = new SQGeomAcc();
 	//geom_acc->SetMuonMode(SQGeomAcc::PAIR); // PAIR, PAIR_TBBT, SINGLE, SINGLE_T, etc.
@@ -263,7 +262,6 @@ int Fun4Sim(const int nevent = 10)
 	se->registerSubsystem(geom_acc);
 	// Make SQ nodes for truth info
 	se->registerSubsystem(new TruthNodeMaker());
-*/
 	// embedding
 	if(embedding_opt == 1) {
 		SRawEventEmbed *embed = new SRawEventEmbed("SRawEventEmbed");

@@ -207,11 +207,11 @@ int DimuAnaRUS::InitRun(PHCompositeNode* startNode)
 
 int DimuAnaRUS::process_event(PHCompositeNode* startNode)
 {
-	/*
-	   if (! m_evt->get_trigger(SQEvent::MATRIX1)) {
+	/*   //if (! m_evt->get_trigger(SQEvent::MATRIX1)) {
+	   if (! m_evt->get_trigger(SQEvent::NIM4)) {
 	   return Fun4AllReturnCodes::EVENT_OK;
 	   }
-	   */
+	*/
 	if (saveDimuonOnly && m_sq_dim_vec->empty()) {
 		return 0;  // Skip this event if no dimuons are present and the mode is enabled
 	}
@@ -271,10 +271,12 @@ int DimuAnaRUS::process_event(PHCompositeNode* startNode)
 			if (m_hit_vec) {
 				for (int ihit = 0; ihit < m_hit_vec->size(); ++ihit) {
 					SQHit* hit = m_hit_vec->at(ihit);
+					//if (!hit->is_in_time()) continue;
+
 					if(hit->get_track_id() != trk->get_track_id()) continue;
 					int processID_;
-					if(trk->get_charge() >0) processID_ =14;
-					else processID_ =24;
+					if(trk->get_charge() >0) processID_ =15;
+					else processID_ =25;
 					int sourceFlag_= 2;
 					unsigned int encodedValue = EncodeProcess(processID_, sourceFlag_);
 					//cout << "charge: "<< trk->get_charge() <<endl;

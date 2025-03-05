@@ -30,6 +30,8 @@ To include true track or reconstructed variables in your RUS file, follow these 
 | Variable Name          | Type                     | Description                                  |   
 |------------------------|--------------------------|----------------------------------------------|
 | `hitID`                | `std::vector<int>`       | Hit IDs for all hits                         |   
+| `hit_trackID`          | `std::vector<int>`       | Track IDs for all hits                         |   
+| `processID`            | `std::vector<int>`       | Track IDs for all hits                         |   
 | `detectorID`           | `std::vector<int>`       | Detector IDs for all hits                    |   
 | `elementID`            | `std::vector<int>`       | Element IDs associated with each hit         |   
 | `driftDistance`        | `std::vector<double>`    | Drift distances for each hit                 |   

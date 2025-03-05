@@ -55,10 +55,22 @@ PHG4E1039TrackPairGen::PHG4E1039TrackPairGen(const string &name):
   _p_min(0.0),
   _p_max(NAN),
   _p_gaus_width(NAN),
-	_px_min(NAN), _px_max(NAN),
-	_py_min(NAN), _py_max(NAN),
-	_pz_min(NAN), _pz_max(NAN),
+  _px_min(NAN), _px_max(NAN),
+  _py_min(NAN), _py_max(NAN),
+  _pz_min(NAN), _pz_max(NAN),
   _theta_max(NAN),
+  _px_par1_min(-6.0),
+  _py_par1_min(-4.0),
+  _pz_par1_min(10.0),
+  _px_par1_max(6.0),
+  _py_par1_max(4.0),
+  _pz_par1_max(100.0),
+  _px_par2_min(-6.0),
+  _py_par2_min(-4.0),
+  _pz_par2_min(10.0),
+  _px_par2_max(6.0),
+  _py_par2_max(4.0),
+  _pz_par2_max(100.0),
   _eventcount(0),
   _ineve(NULL), 
   _evt(NULL),
@@ -66,8 +78,8 @@ PHG4E1039TrackPairGen::PHG4E1039TrackPairGen(const string &name):
   _legacy_vertexgenerator(false)
 {
 
-  _vertexGen = new SQPrimaryVertexGen();
-  return;
+	_vertexGen = new SQPrimaryVertexGen();
+	return;
 }
 
 void PHG4E1039TrackPairGen::add_particles(const std::string &name, const unsigned int num) {
@@ -368,9 +380,13 @@ int PHG4E1039TrackPairGen::process_event(PHCompositeNode *topNode) {
 		  const int max_iterations = 100;
 		  if (muon_counter == 1) {
 		  	do {
-			  px = (_px_max - _px_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_min;
-			  py = (_py_max - _py_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_min;
-			  pz = (_pz_max - _pz_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_min;
+
+			if (verbosity > 0) cout << "_pz_par1_min: "<< _pz_par1_min << "_pz_par1_max: " << _pz_par1_max << endl;
+
+			  px = (_px_par1_max - _px_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_par1_min;
+			  py = (_py_par1_max - _py_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_par1_min;
+			  pz = (_pz_par1_max - _pz_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_par1_min;
+
 			  muon1.SetXYZM(px, py, pz, 0.1056);
 			  iteration++;
 			}while (!(muon1.Pt() > _pt_min && muon1.Pt() < _pt_max && iteration < max_iterations));
@@ -382,9 +398,11 @@ int PHG4E1039TrackPairGen::process_event(PHCompositeNode *topNode) {
 		  if (muon_counter == 2) {
 			  double angle, xF;
 			  do {
-				  px = (_px_max - _px_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_min;
-				  py = (_py_max - _py_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_min;
-				  pz = (_pz_max - _pz_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_min;
+			if (verbosity > 0) cout << "_pz_par2_min: "<< _pz_par2_min << "_pz_par2_max: " << _pz_par2_max << endl;
+                          px = (_px_par2_max - _px_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_par2_min;
+                          py = (_py_par2_max - _py_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_par2_min;
+                          pz = (_pz_par2_max - _pz_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_par2_min;
+
 				  muon2.SetXYZM(px, py, pz, 0.1056); 
 				  angle = muon1.Vect().Angle(muon2.Vect()) * (180.0 / M_PI);  // Convert from radians to degrees
 				  Double_t mp = 0.938;
@@ -416,7 +434,8 @@ int PHG4E1039TrackPairGen::process_event(PHCompositeNode *topNode) {
 
 		  double m = get_mass(pdgcode);
 		  double e = sqrt(px*px+py*py+pz*pz+m*m);
-
+	
+		  //cout << "pdg code: "<< pdgcode << endl;
 		  PHG4Particle *particle = new PHG4Particlev2();
 		  particle->set_track_id(trackid);
 		  particle->set_vtx_id(vtxindex);
@@ -463,6 +482,23 @@ void PHG4E1039TrackPairGen::set_pxpypz_range(const double x_min,
 	_py_min = y_min; _py_max = y_max;
 	_pz_min = z_min; _pz_max = z_max;
 }
+
+void PHG4E1039TrackPairGen::set_par1_pxpypz_range(const double x_min,
+                const double x_max, const double y_min, const double y_max,
+                const double z_min, const double z_max) {
+        _px_par1_min = x_min; _px_par1_max = x_max;
+        _py_par1_min = y_min; _py_par1_max = y_max;
+        _pz_par1_min = z_min; _pz_par1_max = z_max;
+}
+
+void PHG4E1039TrackPairGen::set_par2_pxpypz_range(const double x_min,
+                const double x_max, const double y_min, const double y_max,
+                const double z_min, const double z_max) {
+        _px_par2_min = x_min; _px_par2_max = x_max;
+        _py_par2_min = y_min; _py_par2_max = y_max;
+        _pz_par2_min = z_min; _pz_par2_max = z_max;
+}
+
 
 void PHG4E1039TrackPairGen::set_max_opening_angle(const double x_max){
          _theta_max = x_max;

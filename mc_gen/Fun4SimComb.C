@@ -2,7 +2,7 @@
 #include <top/G4_Target.C>
 #include <top/G4_InsensitiveVolumes.C>
 #include <top/G4_SensitiveDetectors.C>
-R__LOAD_LIBRARY(libe1039_track_gen)
+R__LOAD_LIBRARY(libdimu_ana_rus)
 R__LOAD_LIBRARY(libfun4all)
 R__LOAD_LIBRARY(libPHPythia8)
 R__LOAD_LIBRARY(libg4detectors)
@@ -105,7 +105,7 @@ int Fun4SimComb(const int nevent = 10)
 			genp->set_pxpypz_range(-6,6, -3,3, 10,100);
 		else
 			genp->set_pxpypz_range(-4.0,4.0, -4,4, 30, 90);
-		genp->set_max_opening_angle(3.0);
+		genp->set_max_opening_angle(2.0);
 		//genp->set_pt_range(0.0, 3.0);
 		//genp->Verbosity(1);
 		se->registerSubsystem(genp);

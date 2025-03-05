@@ -76,6 +76,18 @@ public:
 			const double y_min, const double y_max,
 			const double z_min, const double z_max
 			);
+void set_par1_pxpypz_range(
+                const double x_min, const double x_max,
+                const double y_min, const double y_max,
+                const double z_min, const double z_max
+                );
+
+void set_par2_pxpypz_range(
+                const double x_min, const double x_max,
+                const double y_min, const double y_max,
+                const double z_min, const double z_max
+                );
+
   void set_max_opening_angle(const double x_max);
    //! Enable legacy vertex gen
    void enableLegacyVtxGen() { _legacy_vertexgenerator = true; } //Abi
@@ -117,6 +129,17 @@ private:
   double _px_min, _px_max;
   double _py_min, _py_max;
   double _pz_min, _pz_max;
+
+  // For mup
+  double _px_par1_min, _px_par1_max;
+  double _py_par1_min, _py_par1_max;
+  double _pz_par1_min, _pz_par1_max;
+
+  // For mum
+  double _px_par2_min, _px_par2_max;
+  double _py_par2_min, _py_par2_max;
+  double _pz_par2_min, _pz_par2_max;
+
   double _theta_min, _theta_max;
   int    _eventcount;
   PHG4InEvent* _ineve;
