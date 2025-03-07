@@ -379,6 +379,8 @@ int PHG4E1039TrackPairGen::process_event(PHCompositeNode *topNode) {
 		  int iteration = 0;
 		  const int max_iterations = 100;
 		  if (muon_counter == 1) {
+		  	vtxindex = _ineve->AddVtx(vtx_x,vtx_y,vtx_z,_t0);
+			 if (verbosity > 0) cout << "Mu+ Vertex (first iteration): (" << vtx_x << ", " << vtx_y << ", " << vtx_z << ")" << endl;
 		  	do {
 
 			if (verbosity > 0) cout << "_pz_par1_min: "<< _pz_par1_min << "_pz_par1_max: " << _pz_par1_max << endl;
@@ -386,6 +388,9 @@ int PHG4E1039TrackPairGen::process_event(PHCompositeNode *topNode) {
 			  px = (_px_par1_max - _px_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_par1_min;
 			  py = (_py_par1_max - _py_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_par1_min;
 			  pz = (_pz_par1_max - _pz_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_par1_min;
+
+
+			  if (verbosity > 0) cout << "Mu- Vertex P (1St iteration): (" << px << ", " << py << ", " << pz << ")" << endl;
 
 			  muon1.SetXYZM(px, py, pz, 0.1056);
 			  iteration++;
@@ -396,9 +401,14 @@ int PHG4E1039TrackPairGen::process_event(PHCompositeNode *topNode) {
 		  if((iteration==100))return Fun4AllReturnCodes::ABORTEVENT;
 
 		  if (muon_counter == 2) {
+		  	    vtxindex = _ineve->AddVtx(vtx_x,vtx_y,vtx_z,_t0);
 			  double angle, xF;
 			  do {
-			if (verbosity > 0) cout << "_pz_par2_min: "<< _pz_par2_min << "_pz_par2_max: " << _pz_par2_max << endl;
+			if (verbosity > 0) {
+				cout << "_pz_par2_min: "<< _pz_par2_min << "_pz_par2_max: " << _pz_par2_max << endl;
+				cout << "Mu- Vertex (second iteration): (" << vtx_x << ", " << vtx_y << ", " << vtx_z << ")" << endl;
+				cout << "Mu- Vertex P (second iteration): (" << px << ", " << py << ", " << pz << ")" << endl;
+			   }
                           px = (_px_par2_max - _px_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_par2_min;
                           py = (_py_par2_max - _py_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_par2_min;
                           pz = (_pz_par2_max - _pz_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_par2_min;

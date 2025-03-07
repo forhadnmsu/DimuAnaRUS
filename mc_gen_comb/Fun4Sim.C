@@ -103,7 +103,7 @@ int Fun4Sim(const int nevent = 10)
 		}
 		genp->set_par1_pxpypz_range(-6.0,6.0, -4,4, 5,80);
 		genp->set_par2_pxpypz_range(-6.0,6.0, -4,4, 5,80);
-		genp->set_max_opening_angle(0.75);
+		genp->set_max_opening_angle(10.75);
 		//genp->set_pt_range(0.0, 3.0);
 		//genp->Verbosity(1);
 		se->registerSubsystem(genp);
