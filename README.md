@@ -101,18 +101,19 @@ cmake-this
 make-this                                                                                             
 ```                                                                                                   
 ### Uses                                                                                              
-If you want to analyze and keep the output in RUS format:                                             
+
+#Converting DST to RUS
                                                                                                       
 1. **Single DST File**                                                                                
    To convert a single DST file to RUS format, you can use the `Fun4Test.C` macro.                    
-   Note: This macro is not configured to perform reconstruction or vertexing. Instead, it uses a v    ertexed DST file for post-processing into RUS format.  
+   Note: This macro is not configured to perform reconstruction or vertexing. Instead, it uses a vertexed DST file for processing into RUS format.  
                                                                                                       
    ```bash                                                                                            
    cd Convert                                                                                         
    root -b Fun4Test.C                                                                                 
                                                                                                       
 2. **Processing Multiple DST Files**                                                                  
-   If you have many DST files and want to process them locally or on the grid, use the following c    ommand:  
+   If you have many DST files and want to process them locally or on the grid, use the following command:  
 
    ```bash
    ./gridsub.sh -j 1-5 -g -o
@@ -120,3 +121,11 @@ If you want to analyze and keep the output in RUS format:
 	1. `-j 1-5`: Specifies the range of input DST files to process (from the 1st row to the 5th one).
  	2. `-g`: Enables grid mode for processing.
 	3. `-o`: Overwrites existing files.
+
+# MC Generation & Reconstruction on Rivanna
+
+To generate or reconstruct Monte Carlo (MC) data on Rivanna, navigate to the `mc_gen` directory and follow the instructions provided in the link:
+[SpinQuest Monte Carlo Generation on Rivanna](https://confluence.admin.virginia.edu/display/twist/SpinQuest+Monte+Carlo+Generation+on+Rivanna).
+
+The only difference is that the source path should be:
+

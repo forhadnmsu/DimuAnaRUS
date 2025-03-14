@@ -101,9 +101,9 @@ int Fun4Sim(const int nevent = 10)
 			genp->set_vertex_size_function(PHG4E1039TrackPairGen::Uniform);
 			genp->set_vertex_size_parameters(0.0, 0.0);
 		}
-		genp->set_par1_pxpypz_range(-6.0,6.0, -4,4, 5,80);
-		genp->set_par2_pxpypz_range(-6.0,6.0, -4,4, 5,80);
-		genp->set_max_opening_angle(10.75);
+		genp->set_par1_pxpypz_range(-6.0,6.0, -4,4, 5,70);
+		genp->set_par2_pxpypz_range(-6.0,6.0, -4,4, 5,70);
+		genp->set_max_opening_angle(10.0);
 		//genp->set_pt_range(0.0, 3.0);
 		//genp->Verbosity(1);
 		se->registerSubsystem(genp);

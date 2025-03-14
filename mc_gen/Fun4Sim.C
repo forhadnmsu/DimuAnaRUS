@@ -65,8 +65,8 @@ int Fun4Sim(const int nevent = 10)
 		rc->set_DoubleFlag("FMAGSTR", 0.);
 	}
 	if(SQ_vtx_gen) { // cf. SQPrimaryVertexGen
-		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "All"); // All, Target, Dump, TargetDumpGap or Manual
-		//rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Target"); // All, Target, Dump, TargetDumpGap or Manual
+		//rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "All"); // All, Target, Dump, TargetDumpGap or Manual
+		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Target"); // All, Target, Dump, TargetDumpGap or Manual
 		//rc->set_DoubleFlag("VTX_GEN_Z_START",  50.0); // For "Manual"
 		//rc->set_DoubleFlag("VTX_GEN_Z_STOP" , 100.0); // For "Manual"
 	}
