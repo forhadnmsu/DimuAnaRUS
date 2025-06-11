@@ -89,8 +89,10 @@ void set_par2_pxpypz_range(
                 );
 
   void set_max_opening_angle(const double x_max);
+  void set_max_muon_angle_with_z(const double x_max);
    //! Enable legacy vertex gen
    void enableLegacyVtxGen() { _legacy_vertexgenerator = true; } //Abi
+  double _maxProbability;
 
 private:
 
@@ -140,11 +142,14 @@ private:
   double _py_par2_min, _py_par2_max;
   double _pz_par2_min, _pz_par2_max;
 
-  double _theta_min, _theta_max;
+  double _theta_min, _theta_max, _theta_mu_max;
   int    _eventcount;
   PHG4InEvent* _ineve;
   SQEvent* _evt; //< An output node
   SQMCEvent* _mcevt; //< An output node
+  TH2F *hProb;
+
+
 
   bool _legacy_vertexgenerator;
   SQPrimaryVertexGen* _vertexGen;

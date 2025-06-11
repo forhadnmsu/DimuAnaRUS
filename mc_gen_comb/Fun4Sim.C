@@ -101,9 +101,10 @@ int Fun4Sim(const int nevent = 10)
 			genp->set_vertex_size_function(PHG4E1039TrackPairGen::Uniform);
 			genp->set_vertex_size_parameters(0.0, 0.0);
 		}
-		genp->set_par1_pxpypz_range(-6.0,6.0, -4,4, 5,70);
-		genp->set_par2_pxpypz_range(-6.0,6.0, -4,4, 5,70);
-		genp->set_max_opening_angle(10.0);
+		genp->set_par1_pxpypz_range(-6.0,6.0, -4,4, 5,100);
+		genp->set_par2_pxpypz_range(-6.0,6.0, -4,4, 5,100);
+		genp->set_max_opening_angle(1);
+		genp->set_max_muon_angle_with_z(4);
 		//genp->set_pt_range(0.0, 3.0);
 		//genp->Verbosity(1);
 		se->registerSubsystem(genp);
@@ -235,6 +236,9 @@ int Fun4Sim(const int nevent = 10)
         dimuAna->SetSaveOnlyDimuon(true);
         dimuAna->SetMCTrueMode(true);
         dimuAna->SetRecoMode(true);
+	dimuAna->SetSourceFlag(2);
+	dimuAna->SetProcessId(15);
+
         se->registerSubsystem(dimuAna);
 
 	const bool count_only_good_events = true;

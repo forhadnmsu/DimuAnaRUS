@@ -1,9 +1,9 @@
 #!/bin/bash
 DIR_MACRO=$(dirname $(readlink -f $BASH_SOURCE))
 echo "The script is located in: $DIR_MACRO"
-LIST_VEC=list_dst.txt # File containing the list of input files
+LIST_VEC=list_jpsi.txt # File containing the list of input files
 
-JOB_NAME=NIM4_hits_with_in_time
+JOB_NAME=MC_JPsi_May5_2025
 DO_OVERWRITE=no
 USE_GRID=no
 FORCE_PNFS=no

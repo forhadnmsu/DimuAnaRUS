@@ -24,7 +24,8 @@ mkdir -p       $work
 chmod -R 01755 $work
 
 cd $dir_macros
-tar -czvf $work/input.tar.gz *.C *.cfg *.opts ../setup.sh ../inst
+#tar -czvf $work/input.tar.gz *.C *.cfg *.opts ../setup.sh ../inst
+tar -czvf $work/input.tar.gz *.C *.cfg *.opts ProbabilityMap.root ../setup.sh ../inst
 
 for (( id=1; id<=$njobs; id++ )) ; do
   mkdir -p $work/$id/out
@@ -33,6 +34,7 @@ for (( id=1; id<=$njobs; id++ )) ; do
 
   if [ $do_sub == 1 ]; then
     CMD="/exp/seaquest/app/software/script/jobsub_submit_spinquest.sh"
+    #CMD+=" --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC"
     CMD+=" --expected-lifetime='medium'" # medium=8h, short=3h, long=23h
     CMD+=" -L $work/$id/log_gridrun.txt"
     CMD+=" -f $work/input.tar.gz"

@@ -19,7 +19,8 @@ using namespace std;
 
 int Fun4Sim(const int nevent = 10)
 {
-	const double target_coil_pos_z = -300;
+	//const double target_coil_pos_z = -300;
+	const double target_coil_pos_z = -645; //only for the upstream
 	const int nmu = 1;
 	int embedding_opt = 0;
 	const bool legacy_rec_container = true;
@@ -65,10 +66,10 @@ int Fun4Sim(const int nevent = 10)
 		rc->set_DoubleFlag("FMAGSTR", 0.);
 	}
 	if(SQ_vtx_gen) { // cf. SQPrimaryVertexGen
-		//rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "All"); // All, Target, Dump, TargetDumpGap or Manual
 		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Target"); // All, Target, Dump, TargetDumpGap or Manual
-		//rc->set_DoubleFlag("VTX_GEN_Z_START",  50.0); // For "Manual"
-		//rc->set_DoubleFlag("VTX_GEN_Z_STOP" , 100.0); // For "Manual"
+		//rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Manual"); // All, Target, Dump, TargetDumpGap or Manual
+		//rc->set_DoubleFlag("VTX_GEN_Z_START",-670.0); // For "Manual"
+		//rc->set_DoubleFlag("VTX_GEN_Z_STOP" , -620.0); // For "Manual"
 	}
 	rc->Print();
 
@@ -89,8 +90,9 @@ int Fun4Sim(const int nevent = 10)
 	if(gen_pythia8) {    
 		PHPythia8 *pythia8 = new PHPythia8();
 		//pythia8->Verbosity(99);
-		pythia8->set_config_file("phpythia8_DY.cfg");
-		//pythia8->set_config_file("phpythia8_Jpsi.cfg"); // Jpsi, Jpsi_direct, psip
+		//pythia8->set_config_file("phpythia8_DY.cfg");
+		pythia8->set_config_file("phpythia8_Jpsi.cfg"); // Jpsi, Jpsi_direct, psip
+		//pythia8->set_config_file("phpythia8_psip.cfg"); // Jpsi, Jpsi_direct, psip
 		if(SQ_vtx_gen) pythia8->enableLegacyVtxGen();
 		else{
 			pythia8->set_vertex_distribution_mean(0, 0, target_coil_pos_z, 0);
@@ -177,7 +179,7 @@ int Fun4Sim(const int nevent = 10)
 	if(gen_e906dim){
 		SQPrimaryParticleGen *e906legacy = new  SQPrimaryParticleGen();
 		const bool pythia_gen = false;
-		const bool drellyan_gen = false;
+		const bool drellyan_gen =false;
 		const bool JPsi_gen = true;
 		const bool Psip_gen = false;  
 
@@ -256,7 +258,7 @@ int Fun4Sim(const int nevent = 10)
 	/// Save only events that are in the geometric acceptance.
 	SQGeomAcc* geom_acc = new SQGeomAcc();
 	//geom_acc->SetMuonMode(SQGeomAcc::PAIR); // PAIR, PAIR_TBBT, SINGLE, SINGLE_T, etc.
-	geom_acc->SetMuonMode(SQGeomAcc::PAIR_TBBT); // PAIR, PAIR_TBBT, SINGLE, SINGLE_T, etc.
+	geom_acc->SetMuonMode(SQGeomAcc::PAIR); // PAIR, PAIR_TBBT, SINGLE, SINGLE_T, etc.
 	geom_acc->SetPlaneMode(SQGeomAcc::HODO_CHAM); // HODO, CHAM or HODO_CHAM
 	geom_acc->SetNumOfH1EdgeElementsExcluded(4); // Exclude 4 elements at H1 edges
 	se->registerSubsystem(geom_acc);
@@ -329,14 +331,15 @@ int Fun4Sim(const int nevent = 10)
 	//  out->set_embedding_id(1);
 	//  se->registerOutputManager(out);
 	//}
-
 	DimuAnaRUS* dimuAna = new DimuAnaRUS();
-        dimuAna->SetTreeName("tree");
+    dimuAna->SetTreeName("tree");
 	dimuAna->SetMCTrueMode(true);
-        dimuAna->SetOutputFileName("RUS.root");
-        dimuAna->SetSaveOnlyDimuon(true);
-        dimuAna->SetRecoMode(true);
-        se->registerSubsystem(dimuAna);
+    dimuAna->SetOutputFileName("RUS.root");
+    dimuAna->SetSaveOnlyDimuon(true);
+    dimuAna->SetRecoMode(true);
+    dimuAna->SetRecoDimuMode(true);
+    dimuAna->EnableSQHit(false);
+    se->registerSubsystem(dimuAna);
 
 	const bool count_only_good_events = true;
 	se->run(nevent, count_only_good_events);

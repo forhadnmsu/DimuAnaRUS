@@ -1,9 +1,11 @@
 #include "PHG4E1039TrackPairGen.h"
+#include <cmath>
+#include "TFile.h"
+#include "TH2F.h"
 #include <g4main/PHG4Particlev2.h>
 #include <g4main/PHG4InEvent.h>
 #include "g4main/PHG4VtxPoint.h"
 #include "g4main/PHG4TruthInfoContainer.h"
-
 #include <fun4all/Fun4AllReturnCodes.h>
 #include <phool/getClass.h>
 #include <phool/recoConsts.h>
@@ -11,12 +13,9 @@
 #include <phool/PHIODataNode.h>
 #include <interface_main/SQEvent_v1.h>
 #include <interface_main/SQMCEvent_v1.h>
-
 #include <Geant4/G4ParticleTable.hh>
 #include <Geant4/G4ParticleDefinition.hh>
-
 #include <gsl/gsl_randist.h>
-
 #include <cstdlib>
 #include <cmath>
 #include <cassert>
@@ -59,6 +58,7 @@ PHG4E1039TrackPairGen::PHG4E1039TrackPairGen(const string &name):
   _py_min(NAN), _py_max(NAN),
   _pz_min(NAN), _pz_max(NAN),
   _theta_max(NAN),
+  _theta_mu_max(NAN),
   _px_par1_min(-6.0),
   _py_par1_min(-4.0),
   _pz_par1_min(10.0),
@@ -193,6 +193,25 @@ void PHG4E1039TrackPairGen::set_vertex_size_parameters(const double mean, const 
 
 int PHG4E1039TrackPairGen::InitRun(PHCompositeNode *topNode) {
 
+
+// Add this in PHG4E1039TrackPairGen::InitRun(PHCompositeNode *topNode)
+// after the other initializations (e.g., after _vertexGen->InitRun(topNode);)
+
+
+
+TFile *probFile = TFile::Open("./ProbabilityMap.root");
+
+if (!probFile || probFile->IsZombie()) {
+  cout << PHWHERE << "::Error - cannot open ProbabilityMap.root" << endl;
+    return Fun4AllReturnCodes::ABORTRUN;
+    }
+
+    hProb = dynamic_cast<TH2F*>(probFile->Get("ProbabilityMap"));
+    if (!hProb) {
+      cout << PHWHERE << "::Error - ProbabilityMap histogram not found in file" << endl;
+        return Fun4AllReturnCodes::ABORTRUN;
+	}
+
   if ((_vertex_func_x != Uniform)&&(_vertex_func_x != Gaus)) {
     cout << PHWHERE << "::Error - unknown vertex distribution function requested" << endl;
     return Fun4AllReturnCodes::ABORTRUN;
@@ -323,7 +342,9 @@ int PHG4E1039TrackPairGen::process_event(PHCompositeNode *topNode) {
   TLorentzVector muon1;
   TLorentzVector muon2;
   int muon_counter=0;
-  if(! _particle_names.size() ==2) return Fun4AllReturnCodes::ABORTRUN;
+  //if(! _particle_names.size() ==2) return Fun4AllReturnCodes::ABORTRUN;
+  if (_particle_names.size() != 2) return Fun4AllReturnCodes::ABORTRUN;
+
   
   for (unsigned int i=0; i<_particle_names.size(); ++i) {
 	  muon_counter++;
@@ -374,63 +395,100 @@ int PHG4E1039TrackPairGen::process_event(PHCompositeNode *topNode) {
 		  double px = std::numeric_limits<double>::max();
 		  double py = std::numeric_limits<double>::max();
 		  double pz = std::numeric_limits<double>::max();
-		  double angle;
+		  double angle, angle_mu;
 
 		  int iteration = 0;
 		  const int max_iterations = 100;
 		  if (muon_counter == 1) {
-		  	vtxindex = _ineve->AddVtx(vtx_x,vtx_y,vtx_z,_t0);
-			 if (verbosity > 0) cout << "Mu+ Vertex (first iteration): (" << vtx_x << ", " << vtx_y << ", " << vtx_z << ")" << endl;
-		  	do {
-
-			if (verbosity > 0) cout << "_pz_par1_min: "<< _pz_par1_min << "_pz_par1_max: " << _pz_par1_max << endl;
-
-			  px = (_px_par1_max - _px_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_par1_min;
-			  py = (_py_par1_max - _py_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_par1_min;
-			  pz = (_pz_par1_max - _pz_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_par1_min;
-
-
-			  if (verbosity > 0) cout << "Mu- Vertex P (1St iteration): (" << px << ", " << py << ", " << pz << ")" << endl;
-
-			  muon1.SetXYZM(px, py, pz, 0.1056);
-			  iteration++;
-			}while (!(muon1.Pt() > _pt_min && muon1.Pt() < _pt_max && iteration < max_iterations));
-			//cout << "mu+  first iterations: "<< iteration <<endl; 
-		  }
-
-		  if((iteration==100))return Fun4AllReturnCodes::ABORTEVENT;
-
-		  if (muon_counter == 2) {
-		  	    vtxindex = _ineve->AddVtx(vtx_x,vtx_y,vtx_z,_t0);
-			  double angle, xF;
+			  vtxindex = _ineve->AddVtx(vtx_x,vtx_y,vtx_z,_t0);
+			  if (verbosity > 0) cout << "Mu+ Vertex (first iteration): (" << vtx_x << ", " << vtx_y << ", " << vtx_z << ")" << endl;
 			  do {
-			if (verbosity > 0) {
-				cout << "_pz_par2_min: "<< _pz_par2_min << "_pz_par2_max: " << _pz_par2_max << endl;
-				cout << "Mu- Vertex (second iteration): (" << vtx_x << ", " << vtx_y << ", " << vtx_z << ")" << endl;
-				cout << "Mu- Vertex P (second iteration): (" << px << ", " << py << ", " << pz << ")" << endl;
-			   }
-                          px = (_px_par2_max - _px_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_par2_min;
-                          py = (_py_par2_max - _py_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_par2_min;
-                          pz = (_pz_par2_max - _pz_par2_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_par2_min;
+				  if (verbosity > 0) cout <<"par1  "<<"pdgcode: "<< pdgcode << "_pz_par1_min: "<< _pz_par1_min << "_pz_par1_max: " << _pz_par1_max << endl;
+				   //cout <<"iterations mu 1st track:  "<< iteration <<" pt of the muon1: "<< muon2.Pt() << "angle: "<< angle <<endl;
 
+				  //px = (_px_par1_max - _px_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _px_par1_min;
+				  //py = (_py_par1_max - _py_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _py_par1_min;
+				  //pz = (_pz_par1_max - _pz_par1_min) * gsl_rng_uniform_pos(RandomGenerator) + _pz_par1_min;
+
+				  //px = gsl_ran_gaussian(RandomGenerator, 4) + 0.2;
+				  //py = gsl_ran_gaussian(RandomGenerator, 2) + 0;
+				  //pz = gsl_ran_gaussian(RandomGenerator, 30) + 40;
+					  px = gsl_ran_gaussian(RandomGenerator, 4) - 0.2; 
+					  py = gsl_ran_gaussian(RandomGenerator, 2);
+					  pz = gsl_ran_gaussian(RandomGenerator, 30) + 40;
+
+				  muon1.SetXYZM(px, py, pz, 0.1056);
+				  angle_mu = muon1.Theta() * (180.0 / M_PI);
+				  if (verbosity > 0) cout << "par1(px, py, pz): (" << px << ", " << py << ", " << pz << ")"  << "angle "<< angle_mu << endl;
+				  iteration++;
+				  } while ((iteration < max_iterations) && !((angle_mu < _theta_mu_max) && (muon1.Pt() > _pt_min) && (muon1.Pt() < _pt_max)));
+
+		  }
+		  //if((iteration==100))return Fun4AllReturnCodes::ABORTEVENT;
+		  if (muon_counter == 2) {
+			  vtxindex = _ineve->AddVtx(vtx_x,vtx_y,vtx_z,_t0);
+			  double angle, xF, dimu_pz, angle_mu, dimu_mass;
+			  bool accepted = false;
+			  do {
+				  if (verbosity > 0) {
+					  cout<<"loop 2"<< " pdgcode: "<< pdgcode << endl;
+					  cout << "_pz_par2_min: "<< _pz_par2_min << "_pz_par2_max: " << _pz_par2_max << endl;
+					  cout << "Vertex (second iteration): (" << vtx_x << ", " << vtx_y << ", " << vtx_z << ")" << endl;
+					  cout << "Vertex P (second iteration): (" << px << ", " << py << ", " << pz << ")" << endl;
+				  }
+				  px = gsl_ran_gaussian(RandomGenerator, 4) + 1.5;
+				  py = gsl_ran_gaussian(RandomGenerator, 2);
+				  pz = gsl_ran_gaussian(RandomGenerator, 30) + 40;
 				  muon2.SetXYZM(px, py, pz, 0.1056); 
+				  angle_mu = muon2.Theta() * (180.0 / M_PI);
 				  angle = muon1.Vect().Angle(muon2.Vect()) * (180.0 / M_PI);  // Convert from radians to degrees
+				  if (verbosity > 0) cout << "par2(px, py, pz): (" << px << ", " << py << ", " << pz << ")"  << "angle "<< angle_mu << endl;
 				  Double_t mp = 0.938;
 				  Double_t ebeam = 120.;
 				  TLorentzVector p_beam(0., 0., sqrt(ebeam * ebeam - mp * mp), ebeam);
 				  TLorentzVector p_target(0., 0., 0., mp);
 				  TLorentzVector p_cms = p_beam + p_target;
 				  TLorentzVector p_sum = muon1 + muon2;
+				  dimu_pz = p_sum.Pz();
 				  double mass = p_sum.M();
+				  dimu_mass =mass;
 				  Double_t s = p_cms.M2();
+
 				  TVector3 bv_cms = p_cms.BoostVector();
 				  p_sum.Boost(-bv_cms);
 				  xF = 2. * p_sum.Pz() / TMath::Sqrt(s) / (1. - mass * mass / s);
-				  }while (!((muon2.Pt() >= _pt_min && muon2.Pt() <= _pt_max) && angle < _theta_max && xF < 1.0) && iteration < max_iterations);
-			  	//cout <<"iterations mu second track: "<< iteration <<"pt of the muon2: "<< muon2.Pt() << "angle: "<< angle <<endl;
-			  iteration=0;
+				  //cout <<"iterations mu second track:  "<< iteration <<"pt of the muon2: "<< muon2.Pt() << "angle: "<< angle <<endl;
+				  //cout << "dimu_pz: "<< dimu_pz << endl;
+				
+				      // ----- Rejection Sampling using the Probability Map -----
+				      // Evaluate the candidate probability from the histogram
+				      if (!hProb) {
+				          cout << PHWHERE << " _hProbabilityMap is not initialized!" << endl;
+					      return Fun4AllReturnCodes::ABORTEVENT;
+					      }
+
+					      _maxProbability = hProb->GetMaximum();
+					      //cout << "_maxProbability: " << _maxProbability << endl;
+					      //cout << "Candidate dimu_mass: " << dimu_mass << ", dimu_pz: " << dimu_pz << endl;
+					      int bin = hProb->FindBin(dimu_mass, dimu_pz);
+					      double probCandidate = hProb->GetBinContent(bin);
+					      //cout << "Bin index: " << bin << ", probCandidate: " << probCandidate << endl;
+					      // Generate a random number scaled by the maximum probability
+					      double randomProbability = gsl_rng_uniform(RandomGenerator) * _maxProbability;
+					      //cout << "randomProbability: " << randomProbability << endl;
+					      accepted = (randomProbability <= probCandidate);
+					      //cout << "Candidate accepted: " << accepted << endl;
+    // -------------------------------------------------
+iteration++;
+			  } while (!( (angle_mu < _theta_mu_max) &&
+						  (muon2.Pt() >= _pt_min && muon2.Pt() <= _pt_max) &&
+						  angle < _theta_max &&
+						  (dimu_pz <120 )&&
+						  (xF < 1.0) &&  accepted) && iteration < max_iterations);
+
+
 		  }
-		  if((iteration==100))return Fun4AllReturnCodes::ABORTEVENT;
+		 if (iteration >= max_iterations) return Fun4AllReturnCodes::ABORTEVENT;
 		  iteration=0;
 		  if (verbosity > 0 &&  muon_counter == 2){
 			  cout << "angle of the muons: "<< angle << endl;
@@ -514,6 +572,10 @@ void PHG4E1039TrackPairGen::set_max_opening_angle(const double x_max){
          _theta_max = x_max;
 }
 
+
+void PHG4E1039TrackPairGen::set_max_muon_angle_with_z(const double x_max){
+         _theta_mu_max = x_max;
+	 }
 
 double
 PHG4E1039TrackPairGen::smearvtx(const double position, const double width, FUNCTION dist) const
