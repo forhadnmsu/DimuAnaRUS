@@ -6,15 +6,15 @@
 
 > To enable probability-based generation, set the flag `gen_particle_with_exp_pdf = true`.
 >**Note:** This mode is under active development. Please validate your output distributions before use.
----
-## Momentum and Angular Configuration (Random Generation Mode)
 In random mode, each muon's momentum can be independently defined through user-specified 3D ranges:
 
 ```cpp
 comb->set_par1_pxpypz_range(-6.0, 6.0, -4.0, 4.0, 5.0, 100.0);  // mu+
 comb->set_par2_pxpypz_range(-6.0, 6.0, -4.0, 4.0, 5.0, 100.0);  // mu-
+```
 
 To restrict the opening angle between the generated muon pair, use:
 ```cpp
 comb->set_max_opening_angle(10);  // angle in degrees
+```
 
