@@ -18,3 +18,7 @@ To restrict the opening angle between the generated muon pair, use:
 comb->set_max_opening_angle(10);  // angle in degrees
 ```
 
+## Running the Macro
+
+Running the Fun4All macro is the same as described here:
+[https://github.com/forhadnmsu/DimuAnaRUS/tree/main/mc_gen](https://github.com/forhadnmsu/DimuAnaRUS/tree/main/mc_gen)
