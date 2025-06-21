@@ -119,68 +119,70 @@ int DimuAnaRUS::InitRun(PHCompositeNode* startNode)
 }
 
 	if (reco_mode==true){
-		m_tree->Branch("rec_charge", &rec_charge);
-		m_tree->Branch("rec_vx", &rec_vx);
-		m_tree->Branch("rec_vy", &rec_vy);
-		m_tree->Branch("rec_vz", &rec_vz);
-		m_tree->Branch("rec_px", &rec_px);
-		m_tree->Branch("rec_py", &rec_py);
-		m_tree->Branch("rec_pz", &rec_pz);
-		m_tree->Branch("rec_x_st1", &rec_x_st1);
-		m_tree->Branch("rec_y_st1", &rec_y_st1);
-		m_tree->Branch("rec_z_st1", &rec_z_st1);
-		m_tree->Branch("rec_px_st1", &rec_px_st1);
-		m_tree->Branch("rec_py_st1", &rec_py_st1);
-		m_tree->Branch("rec_pz_st1", &rec_pz_st1);
-		m_tree->Branch("rec_x_st3", &rec_x_st3);
-		m_tree->Branch("rec_y_st3", &rec_y_st3);
-		m_tree->Branch("rec_z_st3", &rec_z_st3);
-		m_tree->Branch("rec_px_st3", &rec_px_st3);
-		m_tree->Branch("rec_py_st3", &rec_py_st3);
-		m_tree->Branch("rec_pz_st3", &rec_pz_st3);
-        m_tree->Branch("rec_chisq_dump", &rec_chisq_dump);
+        m_tree->Branch("rec_track_id",       &rec_track_id);
+        m_tree->Branch("rec_charge",         &rec_charge);
+        m_tree->Branch("rec_vx",             &rec_vx);
+        m_tree->Branch("rec_vy",             &rec_vy);
+        m_tree->Branch("rec_vz",             &rec_vz);
+        m_tree->Branch("rec_px",             &rec_px);
+        m_tree->Branch("rec_py",             &rec_py);
+        m_tree->Branch("rec_pz",             &rec_pz);
+        m_tree->Branch("rec_x_st1",          &rec_x_st1);
+        m_tree->Branch("rec_y_st1",          &rec_y_st1);
+        m_tree->Branch("rec_z_st1",          &rec_z_st1);
+        m_tree->Branch("rec_px_st1",         &rec_px_st1);
+        m_tree->Branch("rec_py_st1",         &rec_py_st1);
+        m_tree->Branch("rec_pz_st1",         &rec_pz_st1);
+        m_tree->Branch("rec_x_st3",          &rec_x_st3);
+        m_tree->Branch("rec_y_st3",          &rec_y_st3);
+        m_tree->Branch("rec_z_st3",          &rec_z_st3);
+        m_tree->Branch("rec_px_st3",         &rec_px_st3);
+        m_tree->Branch("rec_py_st3",         &rec_py_st3);
+        m_tree->Branch("rec_pz_st3",         &rec_pz_st3);
+        m_tree->Branch("rec_num_hits",       &rec_num_hits);
+        m_tree->Branch("rec_chisq",          &rec_chisq);
+        m_tree->Branch("rec_chisq_target",   &rec_chisq_target);
+        m_tree->Branch("rec_chisq_dump",     &rec_chisq_dump);
         m_tree->Branch("rec_chisq_upstream", &rec_chisq_upstream);
-        m_tree->Branch("rec_chisq_target", &rec_chisq_target);
+        m_tree->Branch("rec_x_tgt",          &rec_x_tgt);
+        m_tree->Branch("rec_y_tgt",          &rec_y_tgt);
+        m_tree->Branch("rec_z_tgt",          &rec_z_tgt);
+        m_tree->Branch("rec_px_tgt",         &rec_px_tgt);
+        m_tree->Branch("rec_py_tgt",         &rec_py_tgt);
+        m_tree->Branch("rec_pz_tgt",         &rec_pz_tgt);
+        m_tree->Branch("rec_x_dump",         &rec_x_dump);
+        m_tree->Branch("rec_y_dump",         &rec_y_dump);
+        m_tree->Branch("rec_z_dump",         &rec_z_dump);
+        m_tree->Branch("rec_px_dump",        &rec_px_dump);
+        m_tree->Branch("rec_py_dump",        &rec_py_dump);
+        m_tree->Branch("rec_pz_dump",        &rec_pz_dump);
 
-        if(reco_dimu_mode==true){
-            // ===== Dimuon target
-            m_tree->Branch("dimu_px_tgt", &dimu_px_tgt);
-            m_tree->Branch("dimu_py_tgt", &dimu_py_tgt);
-            m_tree->Branch("dimu_pz_tgt", &dimu_pz_tgt);
-            m_tree->Branch("dimu_mass_tgt", &dimu_mass_tgt);
-
-            // ===== Dimuon dump
-            m_tree->Branch("dimu_px_dmp", &dimu_px_dmp);
-            m_tree->Branch("dimu_py_dmp", &dimu_py_dmp);
-            m_tree->Branch("dimu_pz_dmp", &dimu_pz_dmp);
-            m_tree->Branch("dimu_mass_dmp", &dimu_mass_dmp);
-
-            // ===== Mu+ target
-            m_tree->Branch("mu_pos_px_tgt", &mu_pos_px_tgt);
-            m_tree->Branch("mu_pos_py_tgt", &mu_pos_py_tgt);
-            m_tree->Branch("mu_pos_pz_tgt", &mu_pos_pz_tgt);
-
-            // ===== Mu+ dump
-            m_tree->Branch("mu_pos_px_dmp", &mu_pos_px_dmp);
-            m_tree->Branch("mu_pos_py_dmp", &mu_pos_py_dmp);
-            m_tree->Branch("mu_pos_pz_dmp", &mu_pos_pz_dmp);
-
-            // ===== Mu− target
-            m_tree->Branch("mu_neg_px_tgt", &mu_neg_px_tgt);
-            m_tree->Branch("mu_neg_py_tgt", &mu_neg_py_tgt);
-            m_tree->Branch("mu_neg_pz_tgt", &mu_neg_pz_tgt);
-
-            // ===== Mu− dump
-            m_tree->Branch("mu_neg_px_dmp", &mu_neg_px_dmp);
-            m_tree->Branch("mu_neg_py_dmp", &mu_neg_py_dmp);
-            m_tree->Branch("mu_neg_pz_dmp", &mu_neg_pz_dmp);
-
-            m_tree->Branch("mu_neg_pz_dmp", &mu_neg_pz_dmp);
-            m_tree->Branch("mu_neg_pz_dmp", &mu_neg_pz_dmp);
-            m_tree->Branch("mu_neg_pz_dmp", &mu_neg_pz_dmp);
-
-            m_tree->Branch("top_bot", &top_bot);
-            m_tree->Branch("bot_top", &bot_top);
+        if (reco_dimu_mode == true) {
+            m_tree->Branch("rec_dimuon_id",       &rec_dimuon_id);
+            m_tree->Branch("rec_dimuon_true_id",  &rec_dimuon_true_id);
+            m_tree->Branch("rec_track_id_pos",    &rec_track_id_pos);
+            m_tree->Branch("rec_track_id_neg",    &rec_track_id_neg);
+            m_tree->Branch("rec_px_pos_tgt", &rec_px_pos_tgt);
+            m_tree->Branch("rec_py_pos_tgt", &rec_py_pos_tgt);
+            m_tree->Branch("rec_pz_pos_tgt", &rec_pz_pos_tgt);
+            m_tree->Branch("rec_px_neg_tgt", &rec_px_neg_tgt);
+            m_tree->Branch("rec_py_neg_tgt", &rec_py_neg_tgt);
+            m_tree->Branch("rec_pz_neg_tgt", &rec_pz_neg_tgt);
+            m_tree->Branch("rec_px_pos_dump", &rec_px_pos_dump);
+            m_tree->Branch("rec_py_pos_dump", &rec_py_pos_dump);
+            m_tree->Branch("rec_pz_pos_dump", &rec_pz_pos_dump);
+            m_tree->Branch("rec_px_neg_dump", &rec_px_neg_dump);
+            m_tree->Branch("rec_py_neg_dump", &rec_py_neg_dump);
+            m_tree->Branch("rec_pz_neg_dump", &rec_pz_neg_dump);
+			m_tree->Branch("rec_px_pos", &rec_px_pos);
+            m_tree->Branch("rec_py_pos", &rec_py_pos);
+            m_tree->Branch("rec_pz_pos", &rec_pz_pos);
+            m_tree->Branch("rec_px_neg", &rec_px_neg);
+            m_tree->Branch("rec_py_neg", &rec_py_neg);
+            m_tree->Branch("rec_pz_neg", &rec_pz_neg);
+            m_tree->Branch("rec_x_dimuon", &rec_x_dimuon);
+            m_tree->Branch("rec_y_dimuon", &rec_y_dimuon);
+            m_tree->Branch("rec_z_dimuon", &rec_z_dimuon);
         }
 	}
 
@@ -387,100 +389,102 @@ int DimuAnaRUS::process_event(PHCompositeNode* startNode)
 	//cout << "reco mode: "<< reco_mode << endl;
 	//std::cout << "Size of m_sq_dim_vec: " << m_sq_dim_vec->size() << std::endl;
 
+int index = -1;
+
 	if(reco_mode == true){
-		ResetRecoBranches();
+        ResetRecoBranches();
 
-		for (auto it = m_sq_trk_vec->begin(); it != m_sq_trk_vec->end(); ++it) {
-			SRecTrack* trk = dynamic_cast<SRecTrack*>(*it);
-			rec_charge.push_back(trk->get_charge());
-			rec_vx.push_back(trk->get_pos_vtx().X());
-			rec_vy.push_back(trk->get_pos_vtx().Y());
-			rec_vz.push_back(trk->get_pos_vtx().Z());
+        for (auto it = m_sq_trk_vec->begin(); it != m_sq_trk_vec->end(); ++it) {
+            index+=1;
+            SRecTrack* trk = dynamic_cast<SRecTrack*>(*it);
+            rec_track_id.push_back(index);  // where i_trk is the index in the reco track loop
+            // Basic track info
+            rec_charge.push_back(trk->get_charge());
+            rec_vx.push_back(trk->get_pos_vtx().X());
+            rec_vy.push_back(trk->get_pos_vtx().Y());
+            rec_vz.push_back(trk->get_pos_vtx().Z());
+            rec_px.push_back(trk->get_mom_vtx().Px());
+            rec_py.push_back(trk->get_mom_vtx().Py());
+            rec_pz.push_back(trk->get_mom_vtx().Pz());
 
-			rec_px.push_back(trk->get_mom_vtx().X());
-			rec_py.push_back(trk->get_mom_vtx().Y());
-			rec_pz.push_back(trk->get_mom_vtx().Z());
+            // Station 1
+            rec_x_st1.push_back(trk->get_pos_st1().X());
+            rec_y_st1.push_back(trk->get_pos_st1().Y());
+            rec_z_st1.push_back(trk->get_pos_st1().Z());
+            rec_px_st1.push_back(trk->get_mom_st1().Px());
+            rec_py_st1.push_back(trk->get_mom_st1().Py());
+            rec_pz_st1.push_back(trk->get_mom_st1().Pz());
 
-			rec_x_st1.push_back(trk->get_pos_st1().X());
-			rec_y_st1.push_back(trk->get_pos_st1().Y());
-			rec_z_st1.push_back(trk->get_pos_st1().Z());
+            // Station 3
+            rec_x_st3.push_back(trk->get_pos_st3().X());
+            rec_y_st3.push_back(trk->get_pos_st3().Y());
+            rec_z_st3.push_back(trk->get_pos_st3().Z());
+            rec_px_st3.push_back(trk->get_mom_st3().Px());
+            rec_py_st3.push_back(trk->get_mom_st3().Py());
+            rec_pz_st3.push_back(trk->get_mom_st3().Pz());
 
-			rec_px_st1.push_back(trk->get_mom_st1().X());
-			rec_py_st1.push_back(trk->get_mom_st1().Y());
-			rec_pz_st1.push_back(trk->get_mom_st1().Z());
-
-			rec_x_st3.push_back(trk->get_pos_st3().X());
-			rec_y_st3.push_back(trk->get_pos_st3().Y());
-			rec_z_st3.push_back(trk->get_pos_st3().Z());
-
-			rec_px_st3.push_back(trk->get_mom_st3().X());
-			rec_py_st3.push_back(trk->get_mom_st3().Y());
-			rec_pz_st3.push_back(trk->get_mom_st3().Z());
-
-            rec_chisq_dump.push_back(trk->get_chisq_dump());
-            rec_chisq_upstream.push_back(trk->get_chsiq_upstream());
+            // Chi-squared
+            rec_chisq.push_back(trk->get_chisq());
             rec_chisq_target.push_back(trk->getChisqTarget());
-		}
+            rec_chisq_dump.push_back(trk->get_chisq_dump());
+            rec_chisq_upstream.push_back(trk->get_chisq_upstream());
+
+            // Number of hits
+            rec_num_hits.push_back(trk->get_num_hits());
+
+            // Target region
+            rec_x_tgt.push_back(trk->get_pos_target().X());
+            rec_y_tgt.push_back(trk->get_pos_target().Y());
+            rec_z_tgt.push_back(trk->get_pos_target().Z());
+            rec_px_tgt.push_back(trk->get_mom_target().Px());
+            rec_py_tgt.push_back(trk->get_mom_target().Py());
+            rec_pz_tgt.push_back(trk->get_mom_target().Pz());
+
+            // Dump region
+            rec_x_dump.push_back(trk->get_pos_dump().X());
+            rec_y_dump.push_back(trk->get_pos_dump().Y());
+            rec_z_dump.push_back(trk->get_pos_dump().Z());
+            rec_px_dump.push_back(trk->get_mom_dump().Px());
+            rec_py_dump.push_back(trk->get_mom_dump().Py());
+            rec_pz_dump.push_back(trk->get_mom_dump().Pz());
+
+        }
+
         if(reco_dimu_mode==true){
             ResetRecoDimuBranches();
             for (auto it = m_sq_dim_vec->begin(); it != m_sq_dim_vec->end(); it++) {
                 SRecDimuon& sdim = dynamic_cast<SRecDimuon&>(**it);
-                sdim.calcVariables(1); //eventually need to assign 1 or 2 depending on the target or dump; more at https://github.com/E1039-Collaboration/e1039-core/pull/149
                 int trk_id_pos = sdim.get_track_id_pos();
                 int trk_id_neg = sdim.get_track_id_neg();
                 SRecTrack& trk_pos = dynamic_cast<SRecTrack&>(*(m_sq_trk_vec->at(trk_id_pos))); 
                 SRecTrack& trk_neg = dynamic_cast<SRecTrack&>(*(m_sq_trk_vec->at(trk_id_neg))); 
-                // Fill dimuon vectors
+
+                rec_dimuon_id.push_back(sdim.get_dimuon_id ());
+                rec_track_id_pos.push_back(trk_id_pos);
+                rec_track_id_neg.push_back(trk_id_neg);
+                rec_px_pos.push_back(sdim.get_mom_pos().Px());
+                rec_py_pos.push_back(sdim.get_mom_pos().Py());
+                rec_pz_pos.push_back(sdim.get_mom_pos().Pz());
+                rec_px_neg.push_back(sdim.get_mom_neg().Px());
+                rec_py_neg.push_back(sdim.get_mom_neg().Py());
+                rec_pz_neg.push_back(sdim.get_mom_neg().Pz());
                 // ===== Target hypothesis =====
-                sdim.calcVariables(1);  // 1 = target
+                sdim.calcVariables(1); // 2 = target
+                rec_px_pos_tgt.push_back(sdim.p_pos_target.Px());
+                rec_py_pos_tgt.push_back(sdim.p_pos_target.Py());
+                rec_pz_pos_tgt.push_back(sdim.p_pos_target.Pz());
 
-                // Dimuon (mu+ + mu-)
-                TLorentzVector mom_target = sdim.p_pos_target + sdim.p_neg_target;
-                dimu_px_tgt.push_back(mom_target.Px());
-                dimu_py_tgt.push_back(mom_target.Py());
-                dimu_pz_tgt.push_back(mom_target.Pz());
-                dimu_mass_tgt.push_back(mom_target.M());
-
-                // μ⁺
-                mu_pos_px_tgt.push_back(sdim.p_pos_target.Px());
-                mu_pos_py_tgt.push_back(sdim.p_pos_target.Py());
-                mu_pos_pz_tgt.push_back(sdim.p_pos_target.Pz());
-
-                // μ⁻
-                mu_neg_px_tgt.push_back(sdim.p_neg_target.Px());
-                mu_neg_py_tgt.push_back(sdim.p_neg_target.Py());
-                mu_neg_pz_tgt.push_back(sdim.p_neg_target.Pz());
-
-
+                rec_px_neg_tgt.push_back(sdim.p_neg_target.Px());
+                rec_py_neg_tgt.push_back(sdim.p_neg_target.Py());
+                rec_pz_neg_tgt.push_back(sdim.p_neg_target.Pz());
                 // ===== Dump hypothesis =====
                 sdim.calcVariables(2);  // 2 = dump
-
-                // Dimuon (mu+ + mu-)
-                TLorentzVector mom_dump = sdim.p_pos_dump + sdim.p_neg_dump;
-                dimu_px_dmp.push_back(mom_dump.Px());
-                dimu_py_dmp.push_back(mom_dump.Py());
-                dimu_pz_dmp.push_back(mom_dump.Pz());
-                dimu_mass_dmp.push_back(mom_dump.M());
-
-                // μ⁺
-                mu_pos_px_dmp.push_back(sdim.p_pos_dump.Px());
-                mu_pos_py_dmp.push_back(sdim.p_pos_dump.Py());
-                mu_pos_pz_dmp.push_back(sdim.p_pos_dump.Pz());
-
-                // μ⁻
-                mu_neg_px_dmp.push_back(sdim.p_neg_dump.Px());
-                mu_neg_py_dmp.push_back(sdim.p_neg_dump.Py());
-                mu_neg_pz_dmp.push_back(sdim.p_neg_dump.Pz());
-
-                bool pos_top = m_rs.PosTop()->FindRoad(trk_pos.getTriggerRoad());
-                bool pos_bot = m_rs.PosBot()->FindRoad(trk_pos.getTriggerRoad());
-                bool neg_top = m_rs.NegTop()->FindRoad(trk_neg.getTriggerRoad());
-                bool neg_bot = m_rs.NegBot()->FindRoad(trk_neg.getTriggerRoad());
-                bool top_bot_ = pos_top && neg_bot;
-                bool bot_top_ =  pos_bot && neg_top;
-                top_bot.push_back(top_bot_);
-                bot_top.push_back(bot_top_);
-
+                rec_px_pos_dump.push_back(sdim.p_pos_dump.Px());
+                rec_py_pos_dump.push_back(sdim.p_pos_dump.Py());
+                rec_pz_pos_dump.push_back(sdim.p_pos_dump.Pz());
+                rec_px_neg_dump.push_back(sdim.p_neg_dump.Px());
+                rec_py_neg_dump.push_back(sdim.p_neg_dump.Py());
+                rec_pz_neg_dump.push_back(sdim.p_neg_dump.Pz());
             }   
         }
 	}
@@ -516,9 +520,8 @@ void DimuAnaRUS::ResetTrueBranches() {
 	gpx_st3.clear(); gpy_st3.clear(); gpz_st3.clear();
 }
 
-
-
 void DimuAnaRUS::ResetRecoBranches() {
+    rec_track_id.clear();
     rec_charge.clear();
     rec_vx.clear(); rec_vy.clear(); rec_vz.clear();
     rec_px.clear(); rec_py.clear(); rec_pz.clear();
@@ -526,52 +529,33 @@ void DimuAnaRUS::ResetRecoBranches() {
     rec_px_st1.clear(); rec_py_st1.clear(); rec_pz_st1.clear();
     rec_x_st3.clear(); rec_y_st3.clear(); rec_z_st3.clear();
     rec_px_st3.clear(); rec_py_st3.clear(); rec_pz_st3.clear();
+    rec_chisq.clear();
+    rec_chisq_target.clear();
     rec_chisq_dump.clear();
     rec_chisq_upstream.clear();
-    rec_chisq_target.clear();
+    rec_num_hits.clear();
+    rec_x_tgt.clear(); rec_y_tgt.clear(); rec_z_tgt.clear();
+    rec_px_tgt.clear(); rec_py_tgt.clear(); rec_pz_tgt.clear();
+    rec_x_dump.clear(); rec_y_dump.clear(); rec_z_dump.clear();
+    rec_px_dump.clear(); rec_py_dump.clear(); rec_pz_dump.clear();
 }
+
+
 void DimuAnaRUS::ResetRecoDimuBranches() {
-
-	// Clear dimuon target variables
-	dimu_px_tgt.clear();
-	dimu_py_tgt.clear();
-	dimu_pz_tgt.clear();
-	dimu_mass_tgt.clear();
-
-	// Clear dimuon dump variables
-	dimu_px_dmp.clear();
-	dimu_py_dmp.clear();
-	dimu_pz_dmp.clear();
-	dimu_mass_dmp.clear();
-
-	// Clear mu+ target variables
-	mu_pos_px_tgt.clear();
-	mu_pos_py_tgt.clear();
-	mu_pos_pz_tgt.clear();
-
-	// Clear mu+ dump variables
-	mu_pos_px_dmp.clear();
-	mu_pos_py_dmp.clear();
-	mu_pos_pz_dmp.clear();
-
-	// Clear mu− target variables
-	mu_neg_px_tgt.clear();
-	mu_neg_py_tgt.clear();
-	mu_neg_pz_tgt.clear();
-
-	// Clear mu− dump variables
-	mu_neg_px_dmp.clear();
-	mu_neg_py_dmp.clear();
-	mu_neg_pz_dmp.clear();
-	top_bot.clear();
-	bot_top.clear();
+    rec_dimuon_id.clear(), rec_dimuon_true_id.clear(), rec_track_id_pos.clear(), rec_track_id_neg.clear();
+    rec_x_dimuon.clear(); rec_y_dimuon.clear(); rec_z_dimuon.clear();
+    rec_px_pos.clear(); rec_py_pos.clear(); rec_pz_pos.clear();
+    rec_px_neg.clear(); rec_py_neg.clear(); rec_pz_neg.clear();
+    rec_px_pos_tgt.clear(); rec_py_pos_tgt.clear(); rec_pz_pos_tgt.clear();
+    rec_px_neg_tgt.clear(); rec_py_neg_tgt.clear(); rec_pz_neg_tgt.clear();
+    rec_px_pos_dump.clear(); rec_py_pos_dump.clear(); rec_pz_pos_dump.clear();
+    rec_px_neg_dump.clear(); rec_py_neg_dump.clear(); rec_pz_neg_dump.clear();
 }
 
 unsigned int DimuAnaRUS::EncodeProcess(int processID, int sourceFlag) {
         return ( (sourceFlag & 0x3) << 5 ) |  // 2 bits for sourceFlag (1-3)
 	                (processID & 0x1F);            // 5 bits for processID (11-24)
 			               }
-
 int DimuAnaRUS::DecodeSourceFlag(unsigned int encoded) { 
 	return (encoded >> 5) & 0x3;
 }

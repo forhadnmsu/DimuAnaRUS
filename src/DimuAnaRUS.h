@@ -104,64 +104,46 @@ class DimuAnaRUS: public SubsysReco {
 	std::vector<double> driftDistance;
 	//std::vector<bool> hitsInTime;
 	// True track data
-	std::vector<int> gCharge;
-	//std::vector<int> sourceFlag;
-	std::vector<int> trackID;
-	std::vector<double> gvx;
-	std::vector<double> gvy;
-	std::vector<double> gvz;
-	std::vector<double> gpx;
-	std::vector<double> gpy;
-	std::vector<double> gpz;
 
-	std::vector<double> gx_st1, gy_st1, gz_st1;
-	std::vector<double> gpx_st1, gpy_st1, gpz_st1;
-	std::vector<double> gx_st3, gy_st3, gz_st3;
-	std::vector<double> gpx_st3, gpy_st3, gpz_st3;
+	std::vector<int> gCharge, trackID;
 
-	// ===== Dimuon target
-	std::vector<double> dimu_px_tgt;
-	std::vector<double> dimu_py_tgt;
-	std::vector<double> dimu_pz_tgt;
-	std::vector<double> dimu_mass_tgt;
+	std::vector<double>
+    gvx, gvy, gvz,
+    gpx, gpy, gpz,
+    gx_st1, gy_st1, gz_st1,
+    gpx_st1, gpy_st1, gpz_st1,
+    gx_st3, gy_st3, gz_st3,
+    gpx_st3, gpy_st3, gpz_st3;
 
-	// ===== Dimuon dump
-	std::vector<double> dimu_px_dmp;
-	std::vector<double> dimu_py_dmp;
-	std::vector<double> dimu_pz_dmp;
-	std::vector<double> dimu_mass_dmp;
+    std::vector<double>
+    rec_dimuon_id, rec_dimuon_true_id, rec_track_id_pos, rec_track_id_neg;
 
-	// ===== Mu+ target
-	std::vector<double> mu_pos_px_tgt;
-	std::vector<double> mu_pos_py_tgt;
-	std::vector<double> mu_pos_pz_tgt;
+	std::vector<double>
+    rec_x_dimuon, rec_y_dimuon, rec_z_dimuon,
+    rec_px_pos, rec_py_pos, rec_pz_pos,
+    rec_px_neg, rec_py_neg, rec_pz_neg,
+    rec_px_pos_tgt, rec_py_pos_tgt, rec_pz_pos_tgt,
+    rec_px_neg_tgt, rec_py_neg_tgt, rec_pz_neg_tgt,
+    rec_px_pos_dump, rec_py_pos_dump, rec_pz_pos_dump,
+    rec_px_neg_dump, rec_py_neg_dump, rec_pz_neg_dump;
 
-	// ===== Mu+ dump
-	std::vector<double> mu_pos_px_dmp;
-	std::vector<double> mu_pos_py_dmp;
-	std::vector<double> mu_pos_pz_dmp;
+	std::vector<int>
+    rec_track_id,          
+    rec_charge,            
+    rec_num_hits;          
 
-	// ===== Mu− target
-	std::vector<double> mu_neg_px_tgt;
-	std::vector<double> mu_neg_py_tgt;
-	std::vector<double> mu_neg_pz_tgt;
-
-	// ===== Mu− dump
-	std::vector<double> mu_neg_px_dmp;
-	std::vector<double> mu_neg_py_dmp;
-	std::vector<double> mu_neg_pz_dmp;
-
-	std::vector<bool> top_bot;
-	std::vector<bool> bot_top;
-
-	std::vector<int> rec_charge;
-	std::vector<double> rec_vx, rec_vy, rec_vz;
-	std::vector<double> rec_px, rec_py, rec_pz;
-	std::vector<double> rec_x_st1, rec_y_st1, rec_z_st1;
-	std::vector<double> rec_px_st1, rec_py_st1, rec_pz_st1;
-	std::vector<double> rec_x_st3, rec_y_st3, rec_z_st3;
-	std::vector<double> rec_px_st3, rec_py_st3, rec_pz_st3;
-    std::vector<double> rec_chisq_dump, rec_chisq_upstream, rec_chisq_target;
+	std::vector<double>
+    rec_vx, rec_vy, rec_vz,
+    rec_px, rec_py, rec_pz,
+    rec_x_st1, rec_y_st1, rec_z_st1,
+    rec_px_st1, rec_py_st1, rec_pz_st1,
+    rec_x_st3, rec_y_st3, rec_z_st3,
+    rec_px_st3, rec_py_st3, rec_pz_st3,
+    rec_chisq, rec_chisq_target, rec_chisq_dump, rec_chisq_upstream,
+    rec_x_tgt, rec_y_tgt, rec_z_tgt,
+    rec_px_tgt, rec_py_tgt, rec_pz_tgt,
+    rec_x_dump, rec_y_dump, rec_z_dump,
+    rec_px_dump, rec_py_dump, rec_pz_dump;
 };
 
 #endif // _DimuAnaRUS.h_

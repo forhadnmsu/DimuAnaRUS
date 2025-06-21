@@ -41,7 +41,7 @@ int Fun4Sim(const int nevent = 10)
 	const double KMAGSTR = -1.025;
 
 	//! Particle generator flag.  Only one of these must be true.
-	const bool gen_particle = true;
+	const bool gen_particle_with_exp_pdf =true;
 	const bool read_hepmc   = false;
 
 	//! Use SQPrimaryVertexGen or not.
@@ -56,7 +56,7 @@ int Fun4Sim(const int nevent = 10)
 	rc->set_DoubleFlag("Z_UPSTREAM", -700.);
 
 	if(SQ_vtx_gen) { // cf. SQPrimaryVertexGen
-		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Dump"); // All, Target, Dump, TargetDumpGap or Manual
+		rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "All"); // All, Target, Dump, TargetDumpGap or Manual
 		//rc->set_CharFlag("VTX_GEN_MATERIAL_MODE", "Target"); // All, Target, Dump, TargetDumpGap or Manual
 		//rc->set_DoubleFlag("VTX_GEN_Z_START",  50.0); // For "Manual"
 		//rc->set_DoubleFlag("VTX_GEN_Z_STOP" , 100.0); // For "Manual"
@@ -84,32 +84,29 @@ int Fun4Sim(const int nevent = 10)
 		se->registerSubsystem(hr);
 	}
 
-	// multi particle gun
-	if(gen_particle) {
-		PHG4E1039TrackPairGen *genp = new PHG4E1039TrackPairGen("MUP");
-		genp->set_seed(125);
-		genp->add_particles("mu+", nmu);  // mu+,e+,proton,pi+,Upsilon
-		genp->set_seed(120);
-		genp->add_particles("mu-", nmu);
-		if (SQ_vtx_gen) genp->enableLegacyVtxGen();
+		PHG4E1039TrackPairGen *comb = new PHG4E1039TrackPairGen("MUP");
+		comb->set_seed(125);
+		comb->add_particles("mu+", nmu);  // mu+,e+,proton,pi+,Upsilon
+		comb->set_seed(120);
+		comb->add_particles("mu-", nmu);
+		if (SQ_vtx_gen) comb->enableLegacyVtxGen();
 		else{
-			genp->set_vertex_distribution_function(PHG4E1039TrackPairGen::Uniform,
+			comb->set_vertex_distribution_function(PHG4E1039TrackPairGen::Uniform,
 					PHG4E1039TrackPairGen::Uniform,
 					PHG4E1039TrackPairGen::Uniform);
-			genp->set_vertex_distribution_mean(0.0, 0.0, target_coil_pos_z);
-			genp->set_vertex_distribution_width(0.0, 0.0, 0.0);
-			genp->set_vertex_size_function(PHG4E1039TrackPairGen::Uniform);
-			genp->set_vertex_size_parameters(0.0, 0.0);
+			comb->set_vertex_distribution_mean(0.0, 0.0, target_coil_pos_z);
+			comb->set_vertex_distribution_width(0.0, 0.0, 0.0);
+			comb->set_vertex_size_function(PHG4E1039TrackPairGen::Uniform);
+			comb->set_vertex_size_parameters(0.0, 0.0);
 		}
-		genp->set_par1_pxpypz_range(-6.0,6.0, -4,4, 5,100);
-		genp->set_par2_pxpypz_range(-6.0,6.0, -4,4, 5,100);
-		genp->set_max_opening_angle(1);
-		genp->set_max_muon_angle_with_z(4);
-		//genp->set_pt_range(0.0, 3.0);
-		//genp->Verbosity(1);
-		se->registerSubsystem(genp);
+	if(gen_particle_with_exp_pdf) comb->SetExpPDFMode(true);
+    else{
+		comb->set_par1_pxpypz_range(-6.0,6.0, -4,4, 5,100);
+		comb->set_par2_pxpypz_range(-6.0,6.0, -4,4, 5,100);
+		comb->set_max_opening_angle(10);
 	}
-
+        //comb->Verbosity(1);
+		se->registerSubsystem(comb);
 
 	// Fun4All G4 module
 	PHG4Reco *g4Reco = new PHG4Reco();
@@ -230,16 +227,17 @@ int Fun4Sim(const int nevent = 10)
 	Fun4AllDstOutputManager *out = new Fun4AllDstOutputManager("DSTOUT", "DST.root");
 	se->registerOutputManager(out);
 
-	DimuAnaRUS* dimuAna = new DimuAnaRUS();
-        dimuAna->SetTreeName("tree");
-        dimuAna->SetOutputFileName("RUS.root");
-        dimuAna->SetSaveOnlyDimuon(true);
-        dimuAna->SetMCTrueMode(true);
-        dimuAna->SetRecoMode(true);
-	dimuAna->SetSourceFlag(2);
-	dimuAna->SetProcessId(15);
 
-        se->registerSubsystem(dimuAna);
+	DimuAnaRUS* dimuAna = new DimuAnaRUS();
+    dimuAna->SetTreeName("tree");
+    dimuAna->SetMCTrueMode(true);
+    dimuAna->SetOutputFileName("RUS.root");
+    dimuAna->SetSaveOnlyDimuon(true);
+    dimuAna->SetRecoMode(true);
+    dimuAna->SetRecoDimuMode(true);
+    dimuAna->EnableSQHit(true);
+	dimuAna->SetProcessId(15);
+    se->registerSubsystem(dimuAna);
 
 	const bool count_only_good_events = true;
 	se->run(nevent, count_only_good_events);

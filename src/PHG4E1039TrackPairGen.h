@@ -7,6 +7,8 @@
 
 #include <TGeoManager.h>
 #include <phgeom/PHGeomUtility.h>
+#include <TFile.h>
+#include <THnSparse.h>
 
 class PHG4InEvent;
 class PHCompositeNode;
@@ -69,6 +71,8 @@ public:
 
   //! set the dimensions of the distribution of particles about the vertex
   void set_vertex_size_parameters(const double mean, const double width);
+  bool gen_with_exp_pdf;
+  void SetExpPDFMode(bool enable) { gen_with_exp_pdf = enable; }
 
   //!
   void set_pxpypz_range(
@@ -148,6 +152,11 @@ private:
   SQEvent* _evt; //< An output node
   SQMCEvent* _mcevt; //< An output node
   TH2F *hProb;
+  TFile* _normFlowFile;         // ROOT file for norm flow momentum map
+  THnSparseD* _hMomentumMap;
+  static constexpr double MUON_MASS = 0.1056;    // GeV/c^2
+  static constexpr double BEAM_ENERGY = 120.0;   // GeV
+  static constexpr double PROTON_MASS = 0.938;   // GeV/c^2
 
 
 
