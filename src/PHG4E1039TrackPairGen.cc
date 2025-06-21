@@ -194,9 +194,9 @@ void PHG4E1039TrackPairGen::set_vertex_size_parameters(const double mean, const 
 int PHG4E1039TrackPairGen::InitRun(PHCompositeNode *topNode) {
 
 if(gen_with_exp_pdf){
-	_normFlowFile = TFile::Open("NormFlowMomentumMap.root");
+	_normFlowFile = TFile::Open("NormMomentumMap.root");
 	if (!_normFlowFile || _normFlowFile->IsZombie()) {
-		cout << PHWHERE << "::Error - cannot open NormFlowMomentumMap.root" << endl;
+		cout << PHWHERE << "::Error - cannot open NormMomentumMap.root" << endl;
 		return Fun4AllReturnCodes::ABORTRUN;
 	}
 	_hMomentumMap = dynamic_cast<THnSparseD*>(_normFlowFile->Get("MomentumMap"));
