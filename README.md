@@ -1,18 +1,6 @@
 ## Goal
 The goal of this `DimuAnaRUS` module is to get the input data from a ROOT file (in DST format) and convert them into RUS (ROOT Universal Structure) format. This includes triggers, hits, true/reconstructed track or dimuon information, and event details. It supports a wide range of data formats such as integers, doubles, and booleans, and can store this data in flat, vector, or array formats.
 
-### Instructions for Adding Reconstructed Variables to RUS File
-To include true track or reconstructed variables in your RUS file, follow these steps:
-
-1. **Set the appropriate dimuon road option:**
-   - For simulated data, set `SetMCTriggerEmu()` to `true`.
-   - For experimental data, set `SetDataTriggerEmu()` to `true`. The `SetDataTriggerEmu()` and `SetMCTriggerEmu()` functions are mutually exclusive, so if you set one to `true`, the other will automatically be set to `false`.
-	- These functions ensure that the dimuons are satisfied in the `top-bot` or `bot-top` roads.
-
-2. **Enable reconstruction mode:**
-   - Set `SetRecoMode()` to `true` to add the reconstructed variables.
-   - Set `SetMCMode()` to `true` to add the MC true variables.
-
 # Updated Variable Names and Types
 ## Event-Level Variables
 | Variable Name      | Type               | Description                          |   
@@ -134,14 +122,12 @@ These variables store information about reconstructed muon tracks, will be obtai
 | `rec_py_dump`       | `std::vector<double>` | y-component of the reconstructed momentum at the dump.                      | `SRecTrack::get_mom_dump().Py()`       |
 | `rec_pz_dump`       | `std::vector<double>` | z-component of the reconstructed momentum at the dump.                      | `SRecTrack::get_mom_dump().Pz()`       |
 
-
-``` Compilation before running the Fun4All macro                                                      
+``` Compilation before running the Fun4All macro locally or in the grid                                                      
 source setup.sh                                                                                       
 cmake-this                                                                                            
 make-this                                                                                             
 ```                                                                                                   
 ### Uses                                                                                              
-
 #Converting DST to RUS
                                                                                                       
 1. **Single DST File**                                                                                

@@ -9,6 +9,8 @@
 #include <phgeom/PHGeomUtility.h>
 #include <TFile.h>
 #include <THnSparse.h>
+#include <TLorentzVector.h>
+
 
 class PHG4InEvent;
 class PHCompositeNode;
@@ -68,6 +70,9 @@ public:
   
   //! set the distribution function of particles about the vertex
   void set_vertex_size_function(FUNCTION r);
+  bool GenerateMomentumWithoutExpPDF(int muon_counter, int pdgcode, TLorentzVector &muon1, TLorentzVector &muon2, double &px, double &py, double &pz);
+  bool GenerateMomentumWithExpPDF(int muon_counter, double &px, double &py, double &pz);
+
 
   //! set the dimensions of the distribution of particles about the vertex
   void set_vertex_size_parameters(const double mean, const double width);

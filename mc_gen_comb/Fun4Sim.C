@@ -41,7 +41,7 @@ int Fun4Sim(const int nevent = 10)
 	const double KMAGSTR = -1.025;
 
 	//! Particle generator flag.  Only one of these must be true.
-	const bool gen_particle_with_exp_pdf =true;
+	const bool gen_particle_with_exp_pdf =false;
 	const bool read_hepmc   = false;
 
 	//! Use SQPrimaryVertexGen or not.
@@ -105,7 +105,7 @@ int Fun4Sim(const int nevent = 10)
 		comb->set_par2_pxpypz_range(-6.0,6.0, -4,4, 5,100);
 		comb->set_max_opening_angle(10);
 	}
-        //comb->Verbosity(1);
+        comb->Verbosity(1);
 		se->registerSubsystem(comb);
 
 	// Fun4All G4 module
