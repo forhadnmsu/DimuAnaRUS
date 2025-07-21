@@ -2,6 +2,8 @@
 #define _DIMU_ANA_RUS_H_
 #include <fun4all/SubsysReco.h>
 #include <UtilAna/TrigRoadset.h>
+#include <unordered_map>
+
 
 class TFile;
 class TTree;
@@ -12,6 +14,8 @@ class SQHitVector;
 class SQTrackVector;
 class SQDimuonVector;
 class SQMCEvent;
+class TrackletVector;
+class SQHit;
 
 class DimuAnaRUS: public SubsysReco {
 	SQEvent* m_evt;
@@ -20,6 +24,7 @@ class DimuAnaRUS: public SubsysReco {
 	SQHitVector* m_hit_vec;
 	SQTrackVector * m_vec_trk;
 	SQTrackVector*  m_sq_trk_vec;
+    TrackletVector* trackletVec;
 	SQDimuonVector* m_sq_dim_vec;
 	SQDimuonVector* m_true_vec_dim;
 	SQRun* sq_run;
@@ -59,6 +64,11 @@ class DimuAnaRUS: public SubsysReco {
 	void SetSaveOnlyDimuon(bool enable) { saveDimuonOnly = enable; }
 	void SetSourceFlag(int flag) { SourceFlag = flag; }
 	void SetProcessId(int proc_id_) { proc_id = proc_id_; }
+
+
+    std::pair<int, int> GetDetElemIDFromHitID(int hit_id) const;
+    std::pair<int, int> GetDetElemIDFromHitID(int hit_id, const std::unordered_map<int, SQHit*>& hit_map) const;
+
 
 	unsigned int EncodeProcess(int processID, int sourceFlag);
 	static int DecodeSourceFlag(unsigned int encoded);
@@ -115,35 +125,39 @@ class DimuAnaRUS: public SubsysReco {
     gx_st3, gy_st3, gz_st3,
     gpx_st3, gpy_st3, gpz_st3;
 
-    std::vector<double>
-    rec_dimuon_id, rec_dimuon_true_id, rec_track_id_pos, rec_track_id_neg;
+	std::vector<int>
+    rec_dimuon_id, rec_dimuon_true_id, rec_dimuon_track_id_pos, rec_dimuon_track_id_neg;
 
 	std::vector<double>
-    rec_x_dimuon, rec_y_dimuon, rec_z_dimuon,
-    rec_px_pos, rec_py_pos, rec_pz_pos,
-    rec_px_neg, rec_py_neg, rec_pz_neg,
-    rec_px_pos_tgt, rec_py_pos_tgt, rec_pz_pos_tgt,
-    rec_px_neg_tgt, rec_py_neg_tgt, rec_pz_neg_tgt,
-    rec_px_pos_dump, rec_py_pos_dump, rec_pz_pos_dump,
-    rec_px_neg_dump, rec_py_neg_dump, rec_pz_neg_dump;
+    rec_dimuon_x, rec_dimuon_y, rec_dimuon_z,
+    rec_dimuon_px_pos, rec_dimuon_py_pos, rec_dimuon_pz_pos,
+    rec_dimuon_px_neg, rec_dimuon_py_neg, rec_dimuon_pz_neg,
+    rec_dimuon_px_pos_tgt, rec_dimuon_py_pos_tgt, rec_dimuon_pz_pos_tgt,
+    rec_dimuon_px_neg_tgt, rec_dimuon_py_neg_tgt, rec_dimuon_pz_neg_tgt,
+    rec_dimuon_px_pos_dump, rec_dimuon_py_pos_dump, rec_dimuon_pz_pos_dump,
+    rec_dimuon_px_neg_dump, rec_dimuon_py_neg_dump, rec_dimuon_pz_neg_dump;
+
 
 	std::vector<int>
-    rec_track_id,          
-    rec_charge,            
-    rec_num_hits;          
+    rec_track_id,
+    rec_track_charge,
+    rec_track_num_hits;
+	std::vector<std::vector<int>> rec_hit_ids;
+	std::vector<std::vector<double>> rec_track_hit_x;
+	std::vector<std::vector<double>> rec_track_hit_y;
 
 	std::vector<double>
-    rec_vx, rec_vy, rec_vz,
-    rec_px, rec_py, rec_pz,
-    rec_x_st1, rec_y_st1, rec_z_st1,
-    rec_px_st1, rec_py_st1, rec_pz_st1,
-    rec_x_st3, rec_y_st3, rec_z_st3,
-    rec_px_st3, rec_py_st3, rec_pz_st3,
-    rec_chisq, rec_chisq_target, rec_chisq_dump, rec_chisq_upstream,
-    rec_x_tgt, rec_y_tgt, rec_z_tgt,
-    rec_px_tgt, rec_py_tgt, rec_pz_tgt,
-    rec_x_dump, rec_y_dump, rec_z_dump,
-    rec_px_dump, rec_py_dump, rec_pz_dump;
+    rec_track_vx, rec_track_vy, rec_track_vz,
+    rec_track_px, rec_track_py, rec_track_pz,
+    rec_track_x_st1, rec_track_y_st1, rec_track_z_st1,
+    rec_track_px_st1, rec_track_py_st1, rec_track_pz_st1,
+    rec_track_x_st3, rec_track_y_st3, rec_track_z_st3,
+    rec_track_px_st3, rec_track_py_st3, rec_track_pz_st3,
+    rec_track_chisq, rec_track_chisq_tgt, rec_track_chisq_dump, rec_track_chisq_upstream,
+    rec_track_x_tgt, rec_track_y_tgt, rec_track_z_tgt,
+    rec_track_px_tgt, rec_track_py_tgt, rec_track_pz_tgt,
+    rec_track_x_dump, rec_track_y_dump, rec_track_z_dump,
+    rec_track_px_dump, rec_track_py_dump, rec_track_pz_dump;
 };
 
 #endif // _DimuAnaRUS.h_

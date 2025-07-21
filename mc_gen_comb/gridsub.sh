@@ -25,7 +25,7 @@ chmod -R 01755 $work
 
 cd $dir_macros
 #tar -czvf $work/input.tar.gz *.C *.cfg *.opts ../setup.sh ../inst
-tar -czvf $work/input.tar.gz *.C *.cfg *.opts ProbabilityMap.root ../setup.sh ../inst
+tar -czvf $work/input.tar.gz *.C *.cfg *.opts NormMomentumMap.root ../setup.sh ../inst
 
 for (( id=1; id<=$njobs; id++ )) ; do
   mkdir -p $work/$id/out
