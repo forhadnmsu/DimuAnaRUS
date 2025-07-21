@@ -3,6 +3,8 @@
 *.tmp
 *.swp
 build/
+mc_gen_comb/scratch
+mc_gen/scratch
 inst/
 work_reco/data
 work_reco/scratch
